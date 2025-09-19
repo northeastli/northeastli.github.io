@@ -36,6 +36,57 @@
     <div id="aplayer-container"></div>
   </main>
 
+  <header class="hero">
+    <h1>刘森</h1>
+    <h2>华北无浪漫，习惯在自娱自乐中自赏，在自言自语里牢骚。近三十年的华北平原日复一日，浪与革交织，汇聚成一股不止属于我的浪潮。深海般的生活，是我心里的华北浪革。</h2>
+  </header>
+
+  <style>
+    /* Header 容器样式 */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298); /* 渐变背景 */
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .hero h2 {
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.8;
+      max-width: 800px;
+      color: #e0e0e0;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    }
+
+    /* 响应式适配小屏幕 */
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+      .hero h2 {
+        font-size: 1rem;
+        padding: 0 10px;
+      }
+    }
+  </style>
+
+
   <footer>
     <p>© 2025 华北浪漫革命</p>
   </footer>

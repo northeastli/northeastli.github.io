@@ -3,81 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <title>专辑</title>
+
+  <!-- 引入全局样式 -->
   <link rel="stylesheet" href="../../css/style.css">
+
   <style>
-    /* 选项卡容器 */
-    .tabs {
-      display: flex;
-      margin: 20px 0;
-      border-bottom: 2px solid #ccc;
-    }
-
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      font-weight: bold;
-      border-bottom: 3px solid transparent;
-      transition: all 0.3s ease;
-    }
-
-    .tab.active {
-      border-bottom-color: #1e3c72;
-      color: #1e3c72;
-    }
-
-    /* 选项卡内容 */
-    .tab-content {
-      display: none; /* 默认隐藏 */
-      margin-top: 20px;
-    }
-
-    .tab-content.active {
-      display: block; /* 当前选中显示 */
-    }
-
-    /* 专辑网格 */
+    /* ==========================================
+       专辑网格布局
+       ========================================== */
     .albums-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 自动适应列数 */
+      gap: 20px;                  /* 网格间距 */
     }
 
+    /* ==========================================
+       单个专辑卡片
+       ========================================== */
     .album-card {
-      background-color: #fff;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
+      background-color: #fff;        /* 白色卡片背景 */
+      border-radius: 15px;           /* 圆角 */
+      overflow: hidden;              /* 超出内容隐藏 */
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* 阴影效果 */
+      text-align: center;            /* 内容居中 */
+      cursor: pointer;               /* 鼠标悬停手型 */
+      transition: transform 0.3s, box-shadow 0.3s; /* 动画过渡 */
     }
 
+    /* 卡片内图片样式 */
     .album-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
+      width: 100%;                   /* 图片占满卡片宽度 */
+      height: 200px;                 /* 固定高度 */
+      object-fit: cover;             /* 裁剪填充，不变形 */
+      display: block;                /* 去除默认下方空隙 */
     }
 
+    /* 卡片标题 */
     .album-card h3 {
-      margin: 10px 0;
-      font-size: 1.1rem;
+      margin: 10px 0;                /* 上下间距 */
+      font-size: 1.1rem;             /* 字体大小 */
     }
 
+    /* 卡片悬停效果 */
     .album-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transform: translateY(-5px);   /* 向上微移动 */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3); /* 阴影加深 */
     }
   </style>
 </head>
 <body>
 
-  <!-- 侧边栏复用 -->
+  <!-- ==========================================
+       侧边栏（复用）
+       ========================================== -->
   <div id="sidebar" class="sidebar">
     <button id="sidebar-toggle" class="sidebar-toggle">&#x25B6;</button>
     <nav class="sidebar-nav">
       <ul>
-        <li><a href="../about/about.html">About</a></li>
+        <li><a href="../about/about.html">关于</a></li>
         <li><a href="albums.html" class="active">专辑</a></li>
         <li><a href="../singles/singles.html">单曲</a></li>
         <li><a href="../live/live.html">现场</a></li>
@@ -85,51 +68,86 @@
     </nav>
   </div>
 
+  <!-- ==========================================
+       页头
+       ========================================== -->
   <header>
     <h1>专辑页面</h1>
     <p>这里展示你的专辑、单曲和未发布单曲</p>
   </header>
 
+  <!-- ==========================================
+       主体内容
+       ========================================== -->
   <main>
-    <!-- 选项卡 -->
+    <!-- 选项卡导航 -->
     <div class="tabs">
-      <div class="tab active" data-tab="albums">专辑</div>
-      <div class="tab" data-tab="singles">单曲</div>
-      <div class="tab" data-tab="unreleased">未发布单曲</div>
+      <div class="tab active" data-tab="albums">秋秋叶</div>
+      <div class="tab" data-tab="northwave">华北浪革</div>
+      <div class="tab" data-tab="wubianjie">无边界音乐</div>
     </div>
 
-    <!-- 选项卡内容 -->
+    <!-- ==========================================
+         选项卡内容区域
+         ========================================== -->
     <div id="albums" class="tab-content active">
       <div class="albums-grid">
-        <div class="album-card"><img src="../../img/废柴.jpg" alt="专辑1"><h3>专辑1</h3></div>
-        <div class="album-card"><img src="../../img/废话三篇.png" alt="专辑2"><h3>专辑2</h3></div>
-        <div class="album-card"><img src="../../img/华北浪革.png" alt="专辑3"><h3>专辑3</h3></div>
+        <!-- 单个专辑卡片 -->
+        <div class="album-card">
+          <a href="detail/秋秋叶/渡.html">
+            <img src="cover/渡.jpg" alt="渡">
+          </a>
+          <h3>渡</h3>
+        </div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/达达杀猪菜.jpg" alt="达达杀猪菜"><h3>达达杀猪菜</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/北工大.jpg" alt="北工大"><h3>北工大</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/到明天.jpg" alt="到明天"><h3>到明天</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/面朝大海春暖花开.jpg" alt="面朝大海春暖花开"><h3>面朝大海春暖花开</h3></div>
       </div>
     </div>
 
-    <div id="singles" class="tab-content">
-      <p>这里显示单曲列表，可以是卡片或列表形式</p>
+    <div id="northwave" class="tab-content">
+      <div class="albums-grid">
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/县城.png" alt="县城"><h3>县城</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/华北浪革.png" alt="华北浪革"><h3>华北浪革</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/和小葛去石家庄.png" alt="和小葛去石家庄"><h3>和小葛去石家庄</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/废柴.jpg" alt="废柴"><h3>废柴</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/废话三篇.png" alt="废话三篇"><h3>废话三篇</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/小歌集.png" alt="小歌集"><h3>小歌集</h3></div>
+      </div>
     </div>
 
-    <div id="unreleased" class="tab-content">
-      <p>这里显示未发布单曲列表</p>
+    <div id="wubianjie" class="tab-content">
+      <div class="albums-grid">
+        <div class="album-card"><img src="../../sidebar/albums/cover/无边界音乐/十七.jpg" alt="十七"><h3>十七</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/无边界音乐/雨Rain.png" alt="雨 RAIN RAIN RAIN"><h3>雨 RAIN RAIN RAIN</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/无边界音乐/四月的天空.png" alt="四月的天空"><h3>四月的天空</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/无边界音乐/云南来信.png" alt="云南来信"><h3>云南来信</h3></div>
+      </div>
     </div>
   </main>
 
+  <!-- ==========================================
+       选项卡切换逻辑脚本
+       ========================================== -->
   <script>
+    // 获取所有选项卡元素
     const tabs = document.querySelectorAll('.tab');
+
+    // 获取所有选项卡内容元素
     const contents = document.querySelectorAll('.tab-content');
 
+    // 遍历每个选项卡，绑定点击事件
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        // 切换选项卡样式
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+        // 1. 切换选项卡高亮样式
+        tabs.forEach(t => t.classList.remove('active')); // 移除所有选项卡高亮
+        tab.classList.add('active');                     // 当前点击选项卡高亮
 
-        // 切换内容显示
-        const target = tab.dataset.tab;
-        contents.forEach(c => c.classList.remove('active'));
-        document.getElementById(target).classList.add('active');
+        // 2. 切换对应内容显示
+        const target = tab.dataset.tab;                 // 获取当前选项卡对应内容的 id
+        contents.forEach(c => c.classList.remove('active')); // 隐藏所有内容
+        document.getElementById(target).classList.add('active'); // 显示对应内容
       });
     });
   </script>

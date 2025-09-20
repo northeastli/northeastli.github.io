@@ -105,3 +105,45 @@ main {
 .sidebar.open ~ main {
   margin-left: 200px;           /* 左边距 = 展开后侧边栏宽度 */
 }
+
+
+
+
+    /* ==========================================
+       选项卡导航容器
+       ========================================== */
+.tabs {
+  display: flex;                     /* 横向排列选项卡 */
+  margin: 20px 0;                    /* 上下间距 */
+  border-bottom: 2px solid #ccc;     /* 底部边框，用作分隔线 */
+}
+
+/* ==========================================
+    单个选项卡样式
+    ========================================== */
+.tab {
+  padding: 10px 20px;                /* 内边距，扩大点击区域 */
+  cursor: pointer;                   /* 鼠标悬停手型 */
+  font-weight: bold;                 /* 字体加粗 */
+  border-bottom: 3px solid transparent; /* 初始无底部高亮 */
+  transition: all 0.3s ease;         /* 动画过渡 */
+}
+
+/* 当前活动选项卡高亮 */
+.tab.active {
+  border-bottom-color: #1e3c72; /* 底部蓝色高亮 */
+  color: #1e3c72;               /* 字体颜色变化 */
+}
+
+/* ==========================================
+    选项卡内容容器
+    ========================================== */
+.tab-content {
+  display: none;                /* 默认隐藏 */
+  margin-top: 20px;             /* 顶部间距 */
+}
+
+/* 当前活动选项卡内容显示 */
+.tab-content.active {
+  display: block;
+}

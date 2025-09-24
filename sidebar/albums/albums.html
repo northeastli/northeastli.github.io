@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>专辑</title>
+
+  <!-- 引入全局样式 -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/sidebar.css">
+  <link rel="stylesheet" href="../../css/album-detail.css">
+
+
+  <style>
+    /* 标签页居中 */
+    .tabs {
+      display: flex;
+      justify-content: center; /* 标签页居中 */
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       侧边栏（复用）
+       ========================================== -->
+  <div id="sidebar" class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../about/about.html">关于</a></li>
+        <li><a href="albums.html" class="active">专辑</a></li>
+        <li><a href="../singles/singles.html">单曲</a></li>
+        <li><a href="../live/live.html">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- ==========================================
+       页头
+       ========================================== -->
+  <header>
+    <h1>专辑页面</h1>
+    <p>这里展示你的专辑、单曲和未发布单曲</p>
+  </header>
+
+  <!-- ==========================================
+       主体内容
+       ========================================== -->
+  <main>
+    <!-- 选项卡导航 -->
+    <div class="tabs">
+      <div class="tab active" data-tab="albums">秋秋叶</div>
+      <div class="tab" data-tab="northwave">华北浪革</div>
+      <div class="tab" data-tab="wubianjie">无边界音乐</div>
+    </div>
+
+    <!-- ==========================================
+         选项卡内容区域
+         ========================================== -->
+    <div id="albums" class="tab-content active">
+      <div class="albums-grid">
+        <!-- 单个专辑卡片 -->
+        <div class="album-card">
+          <a href="detail/秋秋叶/渡.html">
+            <img src="cover/渡.jpg" alt="渡">
+          </a>
+          <h3>渡</h3>
+        </div>
+        <div class="album-card">
+            <a href="detail/秋秋叶/达达杀猪菜.html">
+              <img src="cover/达达杀猪菜.jpg" alt="渡">
+            </a>
+            <h3>达达杀猪菜</h3>
+        </div>
+        <div class="album-card">
+            <a href="detail/秋秋叶/北工大.html">
+              <img src="cover/北工大.jpg" alt="渡">
+            </a>
+            <h3>北工大</h3>
+        </div>
+        <div class="album-card">
+            <a href="detail/秋秋叶/到明天.html">
+              <img src="cover/到明天.jpg" alt="渡">
+            </a>
+            <h3>到明天</h3>
+        </div>
+        <div class="album-card">
+            <a href="detail/秋秋叶/面朝大海春暖花开.html">
+              <img src="cover/面朝大海春暖花开.jpg" alt="渡">
+            </a>
+            <h3>面朝大海春暖花开</h3>
+        </div>
+      </div>
+    </div>
+
+    <div id="northwave" class="tab-content">
+      <div class="albums-grid">
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/县城.png" alt="县城"><h3>县城</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/华北浪革.png" alt="华北浪革"><h3>华北浪革</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/和小葛去石家庄.png" alt="和小葛去石家庄"><h3>和小葛去石家庄</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/废柴.jpg" alt="废柴"><h3>废柴</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/废话三篇.png" alt="废话三篇"><h3>废话三篇</h3></div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/华北浪革/小歌集.png" alt="小歌集"><h3>小歌集</h3></div>
+        <div class="album-card">
+            <a href="detail/华北浪革/永隔一江水.html">
+              <img src="../../../resume/sidebar/albums/cover/永隔一江水.jpg" alt="永隔一江水">
+            </a>
+            <h3>永隔一江水</h3>
+        </div>
+      </div>
+    </div>
+
+    <div id="wubianjie" class="tab-content">
+      <div class="albums-grid">
+        <div class="album-card"><img src="../../sidebar/albums/cover/无边界音乐/十七.jpg" alt="十七"><h3>十七</h3></div>
+        <div class="album-card">
+                <a href="detail/无边界音乐/雨Rain.html">
+                <img src="../../sidebar/albums/cover/无边界音乐/雨Rain.png" alt="雨 RAIN RAIN RAIN">
+                </a>
+            <h3>雨 RAIN RAIN RAIN</h3>
+        </div>
+        <div class="album-card"><img src="../../sidebar/albums/cover/无边界音乐/四月的天空.png" alt="四月的天空"><h3>四月的天空</h3></div>
+        <div class="album-card">
+                <a href="detail/无边界音乐/云南来信.html">
+                <img src="../albums/cover/无边界音乐/云南来信.png" alt="云南来信">
+                </a>
+            <h3>云南来信</h3>
+        </div>
+
+
+      </div>
+    </div>
+  </main>
+
+   <!-- 歌词显示框 -->
+  <div id="lyric-box" class="hero h2">欢迎来到我的网页</div>
+  
+
+  <!-- ==========================================
+       选项卡切换逻辑脚本
+       ========================================== -->
+  <script>
+    // 获取所有选项卡元素
+    const tabs = document.querySelectorAll('.tab');
+
+    // 获取所有选项卡内容元素
+    const contents = document.querySelectorAll('.tab-content');
+
+    // 遍历每个选项卡，绑定点击事件
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // 1. 切换选项卡高亮样式
+        tabs.forEach(t => t.classList.remove('active')); // 移除所有选项卡高亮
+        tab.classList.add('active');                     // 当前点击选项卡高亮
+
+        // 2. 切换对应内容显示
+        const target = tab.dataset.tab;                 // 获取当前选项卡对应内容的 id
+        contents.forEach(c => c.classList.remove('active')); // 隐藏所有内容
+        document.getElementById(target).classList.add('active'); // 显示对应内容
+      });
+    });
+  </script>
+
+  <!-- 点击滚动歌词逻辑 -->
+
+  <script src="../../js/lyricswitch.js" defer></script>
+
+</body>
+</html>

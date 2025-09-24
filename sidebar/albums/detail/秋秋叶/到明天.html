@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>到明天 - 专辑详情</title>
+
+  <!-- 引入 CSS -->
+  <link rel="stylesheet" href="../../../../css/album-detail.css">
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <link rel="stylesheet" href="../../../../css/carousel.css">
+  <link rel="stylesheet" href="../../../../css/player.css">
+  <!-- APlayer 样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+
+  <style>
+    /* 基本布局：左边封面，右边内容 */
+    .album-detail {
+      display: flex; /* 横向排列 */
+      gap: 20px; /* 左右间距 */
+      align-items: flex-start; /* 顶部对齐 */
+    }
+
+    .album-cover {
+      flex: 1; /* 左边占一份 */
+      max-width: 300px;
+      display: flex;
+      flex-direction: column; /* 垂直排列封面和播放器 */
+      gap: 15px; /* 封面和播放器之间的间距 */
+    }
+
+    .album-info {
+      flex: 2; /* 右边占两份 */
+    }
+
+    /* 标签按钮 */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      background: #eee;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .tab:hover {
+      background: #ddd;
+    }
+
+    .tab.active {
+      background: #4285f4;
+      color: white;
+      border-color: #4285f4;
+    }
+
+    /* 内容区域 */
+    .tab-content {
+      display: none; /* 默认隐藏 */
+    }
+
+    .tab-content.active {
+      display: block; /* 只有当前的显示 */
+    }
+
+    /* 歌词高亮 */
+    #lyrics-text p.highlight {
+      color: #4285f4;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar" class="sidebar">
+    <button id="sidebar-toggle" class="sidebar-toggle">&#x25B6;</button>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../../../about/about.html">关于</a></li>
+        <li><a href="../../albums.html" class="active">专辑</a></li>
+        <li><a href="../../../singles/singles.html">单曲</a></li>
+        <li><a href="../../../live/live.html">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 页面头部 -->
+  <header>
+    <h1>到明天</h1>
+  </header>
+
+  <!-- 主体内容 -->
+  <main>
+    <div class="album-detail">
+
+      <!-- 左边：专辑封面和播放器 -->
+      <div class="album-cover">
+        <img src="../../cover/到明天.jpg" alt="到明天" width="100%">
+        
+        <!-- 播放器容器 -->
+        <div id="aplayer-container"></div>
+      </div>
+
+      <!-- 右边：专辑信息 -->
+      <div class="album-info">
+        <!-- 标签按钮 -->
+        <div class="tabs">
+          <div class="tab active" data-target="intro">简介</div>
+          <div class="tab" data-target="lyrics">歌词</div>
+        </div>
+
+        <!-- 标签内容：简介 -->
+        <div id="intro" class="tab-content active">
+          <h2>专辑简介</h2>
+          <p>这是一张关于渡的专辑的简介，可以写一些背景故事、创作灵感等。</p>
+        </div>
+
+        <!-- 标签内容：歌词 -->
+        <div id="lyrics" class="tab-content">
+          <h2>歌词</h2>
+          <div id="lyrics-text">
+            <!-- 歌词将由 JS 动态生成 -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2025 华北浪漫革命</p>
+  </footer>
+
+  <!-- APlayer JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // ---------- 歌词同步函数 ----------
+  function syncLyrics(forceScroll = false) {
+    // 获取当前音频播放时间
+    const currentTime = ap.audio.currentTime;
+    // 用于记录当前应高亮的歌词行
+    let activeLine = null;
+
+    // 遍历所有歌词行，判断是否需要高亮
+    lines.forEach(line => {
+      // 解析每行的时间戳
+      const time = parseFloat(line.dataset.time);
+      // 如果当前时间超过该行时间，则将其设为当前高亮行
+      if (currentTime >= time) activeLine = line;
+      // 移除所有行的高亮样式
+      line.classList.remove('highlight');
+    });
+
+    if (activeLine) {
+      // 高亮当前歌词行
+      activeLine.classList.add('highlight');
+
+      // 只有在强制滚动或用户未手动滚动时才自动滚动
+      if (forceScroll || !isUserScrolling) {
+        const targetScrollTop = activeLine.offsetTop - lyricsContainer.clientHeight / 2 + activeLine.offsetHeight / 2;
+        if (Math.abs(lyricsContainer.scrollTop - targetScrollTop) > 2) {
+          lyricsContainer.scrollTop = targetScrollTop;
+        }
+      }
+    }
+  }
+
+  // ---------- 标签切换逻辑 ----------
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // ---------- 初始化 APlayer ----------
+  const ap = new APlayer({
+    container: document.getElementById('aplayer-container'),
+    fixed: false,
+    autoplay: false,
+    theme: '#FADFA3',
+    loop: 'all',
+    audio: [
+      {
+        name: '到明天',
+        artist: '秋秋叶',
+        url: '../../../../../../audio/秋秋叶/到明天 - 刘森.mp3',
+        cover: '../../cover/到明天.jpg'
+      }
+    ]
+  });
+
+  // 等待 APlayer 加载完成后绑定事件
+  ap.on('canplay', () => {
+    console.log('APlayer 准备完成，可以播放了');
+    console.log('音频时长:', ap.audio.duration, '秒');
+    console.log('音频源:', ap.audio.src);
+    
+    // 监听 APlayer 的 seeking 事件（开始拖动）
+    ap.on('seeking', () => {
+      console.log('开始拖动进度条');
+      isUserSeeking = true;
+      wasUserSeeking = true;
+    });
+
+    // 监听 APlayer 的 seeked 事件（拖动结束）
+    ap.on('seeked', () => {
+      console.log('拖动进度条结束，当前时间:', ap.audio.currentTime);
+      console.log('音频时长:', ap.audio.duration);
+      
+      isUserSeeking = false;
+      wasUserSeeking = false;
+      
+      // 增加延迟时间，确保 APlayer 完全更新了 currentTime
+      setTimeout(() => {
+        console.log('延迟后的当前时间:', ap.audio.currentTime);
+        if (ap.audio.currentTime >= 0) {
+          syncLyrics(true);
+        }
+      }, 200);
+    });
+
+    // 手动处理进度条点击，解决 APlayer seek 问题
+    setTimeout(() => {
+      const progressBar = document.querySelector('.aplayer-bar-wrap');
+      if (progressBar) {
+        console.log('找到进度条，绑定点击事件');
+        progressBar.addEventListener('click', (e) => {
+          console.log('进度条被点击');
+          
+          const rect = progressBar.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+          const targetTime = percentage * ap.audio.duration;
+          
+          console.log('计算目标时间:', targetTime, '秒 (', Math.round(percentage * 100), '%)');
+          
+          try {
+            ap.audio.currentTime = targetTime;
+            setTimeout(() => {
+              console.log('手动设置后的当前时间:', ap.audio.currentTime);
+              syncLyrics(true);
+            }, 100);
+          } catch (error) {
+            console.error('设置时间失败:', error);
+          }
+        });
+      } else {
+        console.warn('未找到进度条元素');
+      }
+    }, 500);
+  });
+
+  // 监听加载错误
+  ap.on('error', () => {
+    console.error('APlayer 加载失败');
+  });
+
+  // 监听音频加载错误
+  ap.audio.addEventListener('error', (e) => {
+    console.error('音频文件加载失败:', e);
+  });
+
+  // ---------- 解析 LRC 文件 ----------
+  function parseLRC(lrc) {
+    const lines = lrc.split('\n');
+    const result = [];
+    lines.forEach(line => {
+      const match = line.match(/\[(\d+):(\d+(\.\d+)?)\](.*)/);
+      if (match) {
+        const min = parseInt(match[1], 10);
+        const sec = parseFloat(match[2]);
+        const text = match[4].trim();
+        result.push({ time: min * 60 + sec, text });
+      }
+    });
+    return result;
+  }
+
+  const lyricsContainer = document.getElementById('lyrics-text');
+  let lines = [];
+  let isUserScrolling = false;  // 拖动歌词
+  let scrollTimeout = null;
+  let isUserSeeking = false;    // 拖动播放器进度条
+  let wasUserSeeking = false;   // 记录是否曾经拖动过进度条
+
+  // ---------- 用户拖动歌词 ----------
+  lyricsContainer.addEventListener('scroll', () => {
+    isUserScrolling = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => { isUserScrolling = false; }, 2500);
+  });
+
+  // ---------- 加载 LRC 文件 ----------
+  fetch('../../../../../../audio/秋秋叶/到明天 - 刘森.lrc')
+    .then(res => res.text())
+    .then(lrcText => {
+      const lyricsData = parseLRC(lrcText);
+
+      // 生成歌词 DOM
+      lyricsContainer.innerHTML = '';
+      lyricsData.forEach(line => {
+        const p = document.createElement('p');
+        p.dataset.time = line.time;
+        p.textContent = line.text;
+        lyricsContainer.appendChild(p);
+      });
+
+      lines = lyricsContainer.querySelectorAll('p');
+
+      // ---------- 同步高亮和自动滚动 ----------
+      ap.on('timeupdate', () => {
+        // 拖动进度条时不自动滚动歌词
+        if (!isUserSeeking) {
+          syncLyrics();
+        }
+      });
+    })
+    .catch(err => console.error('LRC 文件加载失败', err));
+
+});
+</script>
+
+
+
+
+</body>
+</html>

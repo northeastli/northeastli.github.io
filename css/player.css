@@ -1,0 +1,81 @@
+/* 歌词容器 */
+#lyrics-text {
+  max-height: 300px;      /* 限定显示高度 */
+  overflow-y: auto;       /* 显示滚动条 */
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  position: relative;
+}
+
+/* 每行歌词 */
+#lyrics-text p {
+  margin: 5px 0;
+  transition: color 0.3s, font-weight 0.3s;
+  color: #555;            /* 默认灰色 */
+}
+
+/* 当前高亮行 */
+#lyrics-text p.highlight {
+  color: #4285f4;         /* 高亮颜色 */
+  font-weight: bold;
+}
+
+/* 播放器容器与歌词分开 */
+#audio-player-container {
+  margin-top: 20px;        /* 上边距，让播放器和列表分开 */
+}
+
+/* ==========================================
+   现场演出页面歌词样式扩展
+   ========================================== */
+
+/* 现场演出页面的歌词容器调整 */
+.live-detail #lyrics-text {
+  max-height: 350px;       /* 现场页面更高一些 */
+  line-height: 1.8;        /* 更舒适的行间距 */
+  font-size: 1rem;         /* 字体大小 */
+  background: #fff;        /* 白色背景 */
+  border-radius: 10px;     /* 与其他卡片保持一致 */
+  padding: 20px;           /* 更大的内边距 */
+  box-shadow: none;        /* 去除阴影，因为外层有 */
+}
+
+/* 现场演出页面的歌词段落 */
+.live-detail #lyrics-text p {
+  margin-bottom: 10px;     /* 段落间距 */
+  padding: 5px 0;          /* 内边距 */
+  color: #555;             /* 默认颜色 */
+}
+
+/* 现场演出页面的高亮歌词 */
+.live-detail #lyrics-text p.highlight {
+  color: #1e3c72;          /* 与主题色保持一致 */
+  background: rgba(30, 60, 114, 0.1); /* 淡蓝色背景 */
+  padding: 8px 12px;       /* 更明显的内边距 */
+  border-radius: 5px;      /* 圆角 */
+  font-weight: bold;       /* 加粗 */
+}
+
+/* 现场演出页面的歌词标题 */
+.live-detail #lyrics-text h2 {
+  color: #1e3c72;          /* 主题色 */
+  margin-bottom: 15px;     /* 底部间距 */
+  font-size: 1.3rem;       /* 字体大小 */
+  border-bottom: 2px solid #eee; /* 下划线 */
+  padding-bottom: 8px;     /* 下边距 */
+}
+
+/* 现场演出页面的歌词子标题（歌曲名） */
+.live-detail #lyrics-text strong {
+  color: #333;             /* 深灰色 */
+  font-size: 1.1rem;       /* 稍大字体 */
+  display: block;          /* 块级显示 */
+  margin: 15px 0 8px 0;    /* 上下间距 */
+  padding: 5px 0;          /* 内边距 */
+  border-left: 3px solid #1e3c72; /* 左边线 */
+  padding-left: 10px;      /* 左内边距 */
+}
+
+
+

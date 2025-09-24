@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>雨Rain - 专辑详情</title>
+
+  <!-- 引入 CSS -->
+  <link rel="stylesheet" href="../../../../css/album-detail.css">
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <link rel="stylesheet" href="../../../../css/player.css">
+  <link rel="stylesheet" href="../../../../css/sidebar.css">
+  <link rel="stylesheet" href="../../../../css/album-in.css">
+
+  <!-- APlayer 样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+
+  <style>
+
+
+    /* 动态背景切换功能 */
+    body {
+      transition: background-image 1s ease-in-out;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    /* 背景遮罩层，确保内容可读性 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.1); /* 默认遮罩颜色 */    
+      z-index: -1;
+      transition: background 1s ease-in-out; /* 平滑过渡效果 */
+    }
+
+    /* 当有背景图片时，增加遮罩透明度 */
+    body.has-background::before {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar" class="sidebar">
+    <!-- 菜单按钮 -->
+    <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+    
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../../about/about.html">关于</a></li>
+        <li><a href="../../albums.html" class="active">专辑</a></li>
+        <li><a href="../../singles/singles.html">单曲</a></li>
+        <li><a href="../../live/live.html">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 页面头部 -->
+  <header>
+    <h1>雨RAIN RAIN RAIN</h1>
+  </header>
+
+  <!-- 主体内容 -->
+<main> <!-- 页面主体区域（HTML5语义标签），主要内容都写在这里 -->
+  <div class="album-detail"> <!-- 专辑详情的整体容器，通常用于控制左右布局 -->
+
+    <!-- 左边：专辑封面和播放器 -->
+    <div class="album-cover"> <!-- 左侧容器，放封面图和播放器 -->
+      
+      <!-- 专辑封面图片 -->
+      <img src="../../../albums/cover/无边界音乐/雨Rain.png" 
+           alt="雨Rain" 
+           width="100%">
+      
+      <!-- 播放器容器 -->
+      <div id="aplayer-container"></div> <!-- 用来挂载音乐播放器(APlayer等)，JS会在这里渲染 -->
+    </div>
+
+    <!-- 右边：专辑信息 -->
+    <div class="album-info"> <!-- 右侧容器，放专辑的介绍、歌曲列表、歌词等 -->
+      
+      <!-- 上半部分：简介和歌词 -->
+      <div class="info-section">
+        <!-- 标签按钮 -->
+        <div class="tabs">
+          <div class="tab active" data-target="intro">简介</div>
+          <div class="tab" data-target="lyrics">歌词</div>
+          <div class="tab" data-target="live">Live</div>
+        </div>
+
+        <!-- 标签内容：简介 -->
+        <div id="intro" class="tab-content active">
+          <h2>专辑简介</h2>
+          <div style="line-height: 1.8; color: #333;">
+            <p style="margin-bottom: 15px;">10 位中国当代 前沿诗人 共同合作<br>
+            独立音乐创作者 刘森 倾力打造<br>
+            首张诗乐专辑</p>
+            
+            <p style="margin-bottom: 15px;">雨，拥有无法被他人变更的柔软质地。<br>
+            它降落在不同的地方<br>
+            玻璃幕墙、石棉瓦屋顶、苍天古木、蓝色大湖、城市或是乡野……<br>
+            <span style="border-left: 2px solid #ccc; padding-left: 8px; font-style: italic;">它因万物定义自己的存在，也定义着他人。</span></p>
+            
+            <p style="text-align: center; font-weight: bold; margin: 20px 0; font-size: 16px;">这就是雨</p>
+            
+            <p style="text-align: center; font-family: monospace; font-weight: bold; margin: 20px 0; color: #666;">/// RAIN RAIN RAIN ///</p>
+            
+            <p style="margin-bottom: 15px;">它是我们的乡愁，逝去的往昔，以及难以企及的愿景。</p>
+            
+            <p style="margin-bottom: 15px;">专辑缘起是因为音乐人对10位诗人诗歌的感触，来自不同地域、不同世代的十位诗人，在他方，在故乡，取瑟而歌，写下十首不一样的人生况味。音乐人刘森用他独特的音乐风格，为这些诗注入了全新的情感特质。10首风格迥异的诗歌，10首多变的曲风形式，带着我们共同的追溯出发，制作出这张带着潮湿记忆的专辑。</p>
+            
+            <p style="margin-top: 20px; font-style: italic; color: #666;">2018年的末尾，请在张扬和宁静、乖戾和放达之间，聆听我们与这个时代的情思。</p>
+          </div>
+        </div>
+
+        <!-- 标签内容：歌词 -->
+        <div id="lyrics" class="tab-content">
+          <h2>歌词</h2>
+          <div id="lyrics-text">
+            <!-- 歌词将由 JS 动态生成 -->
+          </div>
+        </div>
+
+        <!-- 标签内容：Live -->
+        <div id="live" class="tab-content">
+          <h2>Live现场</h2>
+          <div class="video-item">
+            <div class="video-container">
+              <video controls width="100%">
+                <source src="../../../../../../video/冬夜里的雨滴.mp4" type="video/mp4">
+                您的浏览器不支持视频播放。
+              </video>
+            </div>
+            <p class="video-description">《冬夜里的雨滴》2019/03/31 方磊小说集《走失的水流》首发式</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下半部分：创作者说 -->
+      <div class="live-section-inner">
+        <!-- 创作者说标签按钮 -->
+        <div class="live-tabs">
+          <div class="live-tab active" data-target="creator-info">创作者说</div>
+        </div>
+
+        <!-- 创作者说内容区域 -->
+        <div class="live-content">
+    
+          <!-- 创作者说内容 -->
+          <div id="creator-info" class="live-tab-content active">
+            <div class="video-item">
+              <div id="creator-text">
+                <!-- 创作者说内容将由 JS 动态生成 -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2025 华北浪漫革命</p>
+  </footer>
+
+  <!-- APlayer JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <!-- 歌词管理器 -->
+  <script src="../../../../js/lyrics-manager.js"></script>
+  <!-- 主功能脚本 -->
+  <script src="../../../../js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 初始化歌词管理器
+  const lyricsManager = new LyricsManager({
+    lyricsContainerId: 'lyrics-text',
+    highlightClass: 'highlight'
+  });
+
+  // 用户拖拽进度条的状态标记
+  let isUserSeeking = false;
+
+  // ---------- 背景切换功能 ----------
+  function changeBackground(songName) {
+    // 定义歌曲名称与背景图片的映射
+    const backgroundMap = {
+      '明天': '../../../albums/cover/跨界文化/明天跨界文化.jpg',
+      '雨打风吹去': '../../../albums/cover/跨界文化/雨打风吹去跨界文化.jpg'
+    };
+    
+    const backgroundPath = backgroundMap[songName];
+    
+    if (backgroundPath) {
+      // 设置背景图片
+      document.body.style.backgroundImage = `url('${backgroundPath}')`;
+      document.body.classList.add('has-background');
+      console.log(`背景已切换到: ${songName} - ${backgroundPath}`);
+    } else {
+      // 如果没有对应的背景图片，恢复默认背景
+      document.body.style.backgroundImage = 'none';
+      document.body.classList.remove('has-background');
+      console.log(`歌曲 "${songName}" 没有对应的背景图片，使用默认背景`);
+    }
+  }
+
+
+
+  // ---------- 标签切换逻辑 ----------
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // ---------- 现场标签切换逻辑 ----------
+  const liveTabs = document.querySelectorAll('.live-tab');
+  const liveContents = document.querySelectorAll('.live-tab-content');
+
+  liveTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      liveTabs.forEach(t => t.classList.remove('active'));
+      liveContents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // ---------- 初始化 APlayer ----------
+  let ap; // 声明播放器变量
+
+  // 专辑数据（直接嵌入HTML中）
+  const albumData = {
+    albumInfo: {
+      name: "雨Rain",
+      artist: "刘森",
+      description: "10 位中国当代前沿诗人共同合作，独立音乐创作者刘森倾力打造首张诗乐专辑。雨，拥有无法被他人变更的柔软质地。它降落在不同的地方——玻璃幕墙、石棉瓦屋顶、苍天古木、蓝色大湖、城市或是乡野……它因万物定义自己的存在，也定义着他人。这就是雨。它是我们的乡愁，逝去的往昔，以及难以企及的愿景。"
+    },
+    trackList: [
+      {
+        name: '雨打风吹去',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/雨打风吹去.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/雨打风吹去.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">雨打风吹去</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人王单单：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">我十六岁离开我的村庄，到异地求学，接着人生就不停地发生转变，个人身份成了一个"外乡人"，而曾经的村庄，就摆在那儿，供我一次次返回，而又让我一辈子无法真正地抵达。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">某一天，当我再次回到老家，黄昏中，竟感觉到一种难以名状的悲伤，当年灯火喧嚣的村子如今死寂沉沉，零星的灯火下，仅有的几个老人带着留守在家的孙子们默默面对着每一天的日落月升。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">我发现，曾几何时，似乎一夜之间我们都长大了，每个人都在以自己的方式离开故乡，求学、打工、死亡......，直到村庄颓败，凋敝，耗空，成为自己最熟悉的陌生地。这些现实存在再与我个人的生活，亲情等糅合在一起，过滤为一种强大的情感力量，促使我写下此诗。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">"在故乡找故乡"，这是最让我为之颤动的一句，任由时间和时代怎样流逝变换，风风雨雨是永恒不变的轮回，也许漂泊感不是人人都有体会，但故乡的概念藏在每一颗心中，不论身体或心灵，就算单枪匹马孤家寡人，即使生活七零八落，我们都在寻找着哪怕只是一个特别小的栖身之地，让我们抵御着年复一年的雨打风吹。</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        name: '在星星峡遇暴风雨',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/在星星峡遇暴风雨.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/在星星峡遇暴风雨.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">在星星峡遇暴风雨</h3>
+            <p style="text-align: center; color: #666; font-size: 16px; font-style: italic; margin-bottom: 20px;">诗人：余秀华 | 音乐：刘森</p>
+            
+            <div style="margin-bottom: 20px; text-align: center;">
+              <div style="display: inline-block; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <video controls style="width: 100%; max-width: 480px; height: auto;">
+                  <source src="../../../../../../video/刘森在星星峡遇暴风雨.mp4" type="video/mp4">
+                  您的浏览器不支持视频播放。
+                </video>
+              </div>
+              <p style="color: #666; font-size: 12px; margin-top: 10px; font-style: italic;">创作者分享视频</p>
+            </div>
+            
+            <p style="text-indent: 2em; color: #555; font-size: 14px; text-align: center;">
+              通过视频了解诗人余秀华和音乐人刘森对这首作品的创作感受。<br>
+              星星峡的暴风雨，不仅是自然的力量，更是心灵的震撼。
+            </p>
+          </div>
+        `
+      },
+      {
+        name: '明天',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/明天.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/明天.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">明天</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人花七：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">于大千世界，每个人都是一粒微不足道的尘埃；于自身，再渺小的生活也组成了一个无法替代的世界。人们在自己担任主角的故事里，品尝命运的编剧设定的一切酸甜苦辣，仿佛没有历经苦痛折磨就无法完成一部动人的作品。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">只是有时——当你被生活的不堪压迫得难以忍受时，当你时刻紧绷的心弦即将断裂时，当你对活着的意义感到迷茫时，有那么一刻，我们需要从自己的世界里挣脱出来，去看看别人的世界，看看那些我们不知道的故事里，一直隐忍而坚强的生命。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">是共鸣也好，是同情也好，也许我们都能从中感受到力量，而给予自己重新面对明天的勇气。当你再次仰望那片我们共同享有的星空，除了迷茫和未知，也许，你还能看到点点闪烁的希望。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">纪实性的作品，文字本身就是会说话的演讲。作者、文字、读者，他们各有各的情绪，像明天不知道会来临什么一样，都藏在未知的世界里。我在对这首歌的处理中，不想刻意沉重或者渲染什么，希望流露出的是自然而然的感觉。这是明天的。</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        name: '冬夜里的雨滴',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/冬夜里的雨滴.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/冬夜里的雨滴.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">冬夜里的雨滴</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人方磊：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">"雨"是我能想到的最接近于诗的意象，"雨"的性灵几乎可以直接抵达诗意的内核。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">创作《冬夜里的雨滴》记忆里就是在一个冬天里的雨夜中，飘忽摇曳的台灯光亮，在旷远苍冷的冬夜里显得羸弱惨淡，窗外匆忽的雨水拍打叩击在内心静静悄悄的嘶鸣中，大地是无际清寒的声息。那一刻我觉得世界在尘嚣与斑斓之后的落幕恰恰才是真正打开了大幕，人间的色彩是如此真实。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">《冬夜里的雨滴》即使在与我其他并不温暖的诗歌作品相比也算是清冷的，或许会并不太讨喜，但我想表达的一种面临真实世界的态度恰在其中，这令我在对这首冷酷的诗歌创作中饱含肃穆。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">生命里那些无从把握，无可捉摸，无以依附以及幽冥的孤独都浸润在这首作品里，命运里的仓惶，人生的空落也随着一个荒阔的冬夜里落下的雨滴点点渗入这首诗歌。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">"雨滴"似乎就是我们自己的飘零和沉落，又似乎是来自天穹对内心的叩问和质疑。我自己在后来看这首诗作时多少觉得在表达上有些决绝，甚至是残忍，但是我想作为文学的写作本身就是一次心灵的自我审判。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">在我个人看来，诗歌是智慧的，是神奇的，而诗歌的痛感表达恰恰是诗歌最具有善意和真挚的内质之一。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">感觉这两人的文字还呼应得挺好。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">此刻正值冬至深夜，窗外风声呼啸没有雨，摇摇欲坠的是桌上那即将过期的日历，不知道镜子前又有多少人感慨自己正在老去。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">冬夜和雨滴本身就足以渲染出一副冰冷的画面，这种冰冷会一直蔓延到清晨的雾气中，穿越风与时空，钻进你当下甚至曾经的心里。当我看到这首诗的时候，是8月盛夏最闷热的那几天，即便如此，我还是体会到了文字中传递出来那种发冷的情绪，同时还有着一种枯萎的美感。在作曲和编曲的时候，文字的画面在我眼里会显得更加直观，有一点浪潮和后朋克的摇滚乐的风格最接近我想要的那种感觉，而且力求文字和音乐的表达上有着艺术上的统一。</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        name: '世纪之爱',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/世纪之爱.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/世纪之爱.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">世纪之爱</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人杨庆祥：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">谢谢刘森。我这首诗是2015年左右写的，非常短，其实就八句。后来就放在诗集里面出版，觉得也不会被人关注。然后有一天，大概前几个月，化城（专辑策划）在微信把这首诗的唱的曲子发给我，当时我听了以后特别感动。</p>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">感动的原因不是诗被唱成了歌，而是觉得刘森非常准确的把握、理解，并且升华了这首诗，当时真的是被他感动，很想认识一下刘森，但是直到今天第一次见，感觉特别好，很干净。跟我想象中的形象稍微有点出入，刚才又听到其他的几首诗，我觉得都唱得特别好。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">其实我以前对把诗改成（歌），尤其是现代诗改成（歌）都是很怀疑的。我觉得有时候听了以后会很尴尬，但是目前今天为止还没有一首让我觉得有点尴尬的，不知道下一首我的（诗）会不会让我尴尬。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">世纪和爱这两种事物在我心中都是宏伟浩瀚的星辰大海，辽阔到以至于让大多数人产生了疲惫。在庆祝和拥抱之后，我真的更想停留在此地，看看云，听听风，在这个时候，希望气氛像带有电子和蒸汽感觉的声音一样，少一点实，多一些飘和幻。</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        name: '还山',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/还山.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/还山.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">还山</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人李元胜：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">这首诗我记得写于某个下午，午睡方起，斑斓的梦像被子一样刚从身上滑落。就是在这样的气氛中，写了一些不合逻辑的诗句，后来整理出两首，这是其中一首。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">游历多年，经常是一个人在山上行走，总有些和其他人不一样的感触，有时会写到诗里去。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">山川湖海离城市很远；行走的游历，离城市人很远。拜访山河有时候就成了现代人的一种愿景。我们更多是在低头忙碌着，仿佛从一出生就处于诗里所说的那种"中年辛苦"。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">很容易能读出作者在多年游历之后自言自语的心境，可对于未经的后来者来说，哪怕多还些债，也不想减少那长江与黄河碰撞的游兴。</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        name: '我',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/我.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/我.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">我</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人雷平阳：</h4>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">在贫弱的生命元素中找寻自己的形象，到别处的阳光下掉过头来审视阴影中的自己，站在今天左右四顾而四方空空如也。对我而言，每一天都是审判日，意味着尽头与别开生面。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">这样一首字数很长的诗歌，一本审判自己的自白书，一篇带有爆裂色彩的演讲稿，用文字构筑出了一种力量，它很难用音符来点缀，也容易画蛇添足。在这种时刻，音乐只是诉说的方式，旋律和乐器的声音就像审判长身旁庄严的卫士，一直注视着我们。</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        name: '布拉格',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/布拉格.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/布拉格.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">布拉格</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人商震：</h4>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">2015年我第一次去布拉格，有一种朝圣的心情。卡夫卡、米兰·昆德拉、斯美塔那等等伟大的名字和布拉格的历史在心里反复发酵。于是，我觉得是来探望也是来学习和感受的。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">我没有去过布拉格，我对他的亲切感更多来自于那首由捷克著名的民族乐派作曲家斯美塔那谱曲的交响乐《伏尔塔瓦河》。这首描写捷克母亲河的作品，极具感染力，每次都把我带向那个迷人的地方。</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">看到这首诗，我用了民谣的曲风去表达它试着让自己能离那神圣的名字更近一些，希望以后能在伏尔塔瓦河畔再一次感受这首作品。</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        name: '逆行',
+        artist: '刘森',
+        url: '../../../../../../audio/无边界音乐/逆行.flac',
+        cover: '../../../albums/cover/无边界音乐/雨Rain.png',
+        lrc: '../../../../../../audio/无边界音乐/逆行.lrc',
+        creator: `
+          <div style="line-height: 1.8; padding: 20px; max-width: 600px; margin: 0 auto;">
+            <h3 style="text-align: center; color: #333; margin-bottom: 20px; font-size: 18px;">逆行</h3>
+            <div style="margin-bottom: 25px;">
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">诗人何向阳：</h4>
+              <p style="text-indent: 2em; margin-bottom: 15px; color: #555; font-size: 14px;">一个秋天的晚上，在西直门地铁站，看到很多进站的人向我走来，而出站的我正好是向他们走去，就这样一种"逆行"的状态。后来，人都走空了，我一人就在大街上走来走去……</p>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">在那个秋天，我时常有一种心理危机的感觉。而就在那个时候，在东直门枢纽站，我在一本诗集的背面，写下了这首诗。</p>
+            </div>
+            <div>
+              <h4 style="color: #666; margin-bottom: 10px; font-size: 14px;">音乐人刘森：</h4>
+              <p style="text-indent: 2em; color: #555; font-size: 14px;">这是一段细腻温柔的文字，顺从和逆行在我看来是相对的，有时候甚至是轮回的，带有注定的色彩。同时这段文字中又有一种难以表达清楚的力量，也许它就在星空上沉默，但它又给了世界忽明忽暗的光，左右着我们的选择。</p>
+            </div>
+          </div>
+        `
+      }
+    ]
+  };
+
+  // 初始化播放器
+  function initializePlayer() {
+    try {
+      console.log('开始初始化播放器...');
+      
+      // 验证音频文件路径
+      albumData.trackList.forEach((track, index) => {
+        console.log(`歌曲 ${index + 1} - ${track.name}:`);
+        console.log(`  音频: ${track.url}`);
+        console.log(`  封面: ${track.cover}`);
+        console.log(`  歌词: ${track.lrc}`);
+      });
+      
+      // 更新专辑简介内容
+      const introContent = document.querySelector('#intro p:last-child');
+      if (introContent && albumData.albumInfo.description) {
+        introContent.textContent = albumData.albumInfo.description;
+      }
+      
+      // 初始化播放器
+      ap = new APlayer({
+        container: document.getElementById('aplayer-container'),
+        fixed: false,
+        autoplay: false,
+        theme: '#FADFA3',
+        loop: 'all',
+        listFolded: false, // 展开播放列表
+        audio: albumData.trackList
+      });
+
+      // 绑定播放器事件
+      bindPlayerEvents();
+      
+      // 绑定歌词管理器到播放器
+      lyricsManager.bindPlayer(ap);
+      
+      console.log('播放器初始化成功');
+      
+    } catch (error) {
+      console.error('播放器初始化失败:', error);
+    }
+  }
+
+  // 绑定播放器事件的函数
+  function bindPlayerEvents() {
+    // 等待 APlayer 加载完成后绑定事件
+    ap.on('canplay', () => {
+      console.log('APlayer 准备完成，可以播放了');
+      console.log('音频时长:', ap.audio.duration, '秒');
+      console.log('音频源:', ap.audio.src);
+    });
+
+    // 监听加载错误
+    ap.on('error', (e) => {
+      console.error('APlayer 加载失败:', e);
+      console.error('错误详情:', e.target ? e.target : '无详细信息');
+    });
+
+    // 监听音频加载错误
+    ap.audio.addEventListener('error', (e) => {
+      console.error('音频文件加载失败:', e);
+      console.error('当前音频源:', ap.audio.src);
+      console.error('音频错误代码:', ap.audio.error ? ap.audio.error.code : '未知');
+      console.error('音频错误信息:', ap.audio.error ? ap.audio.error.message : '无信息');
+    });
+
+    // 监听音频加载开始
+    ap.audio.addEventListener('loadstart', () => {
+      console.log('开始加载音频:', ap.audio.src);
+    });
+
+    // 监听音频元数据加载完成
+    ap.audio.addEventListener('loadedmetadata', () => {
+      console.log('音频元数据加载完成');
+      console.log('音频时长:', ap.audio.duration);
+      console.log('音频格式支持:', ap.audio.canPlayType('audio/flac'));
+    });
+
+    // 监听歌曲切换事件，加载对应歌词和创作者信息
+    ap.on('listswitch', (index) => {
+      console.log('切换到歌曲:', index.index);
+      const currentAudio = ap.list.audios[index.index];
+      
+      // 切换背景
+      changeBackground(currentAudio.name);
+      
+      if (currentAudio.lrc) {
+        lyricsManager.loadLyrics(currentAudio.lrc);
+      }
+      if (currentAudio.creator) {
+        loadCreatorInfo(currentAudio.creator);
+      }
+    });
+
+    // 同步高亮和自动滚动
+    ap.on('timeupdate', () => {
+      // 拖动进度条时不自动滚动歌词
+      if (!isUserSeeking) {
+        lyricsManager.syncLyrics();
+      }
+    });
+
+    // 监听用户开始拖拽进度条
+    ap.on('seeking', () => {
+      isUserSeeking = true;
+    });
+
+    // 监听用户结束拖拽进度条
+    ap.on('seeked', () => {
+      isUserSeeking = false;
+    });
+
+    // 初始加载第一首歌的歌词和创作者信息
+    setTimeout(() => {
+      if (ap.list.audios[0]) {
+        // 设置初始背景
+        changeBackground(ap.list.audios[0].name);
+        
+        if (ap.list.audios[0].lrc) {
+          lyricsManager.loadLyrics(ap.list.audios[0].lrc);
+        }
+        if (ap.list.audios[0].creator) {
+          loadCreatorInfo(ap.list.audios[0].creator);
+        }
+      }
+    }, 1000);
+  }
+
+
+
+  // ---------- 加载创作者信息 ----------
+  function loadCreatorInfo(creatorHTML) {
+    const creatorContainer = document.getElementById('creator-text');
+    if (creatorContainer) {
+      creatorContainer.innerHTML = creatorHTML;
+    }
+  }
+
+  // 启动应用：初始化播放器
+  initializePlayer();
+
+});
+</script>
+
+
+
+
+</body>
+</html>

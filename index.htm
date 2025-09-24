@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>华北浪革</title>
+
+  <!-- 样式 -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/carousel.css">
+  <link rel="stylesheet" href="css/player.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+
+  <!-- APlayer 样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+</head>
+<body> 
+
+
+  <!-- 侧边栏 -->
+  <div id="sidebar" class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+          <li><a href="sidebar/albums/about.html" target="_self">简介</a></li>
+          <li><a href="sidebar/albums/albums.html" target="_self">专辑</a></li>
+          <li><a href="" target="_self">单曲</a></li>
+          <li><a href="sidebar/live/live.html" target="_self">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 最外层容器 -->
+  <header>
+    <h1>华北浪漫革命</h1>
+  </header>
+
+  <main>
+    <!-- 专辑轮播 -->
+    <section id="album-carousel">
+      <div class="carousel-container">
+        <button class="carousel-btn prev">&lt;</button>
+        <div class="carousel-track">
+          <div class="carousel-card" data-link="#"><img src="img/废柴.jpg" alt="专辑1"><div class="album-name"></div></div>
+          <div class="carousel-card" data-link="#"><img src="img/废话三篇.png" alt="专辑2"><div class="album-name"></div></div>
+          <div class="carousel-card" data-link="#"><img src="img/华北浪革.png" alt="专辑3"><div class="album-name"></div></div>
+          <div class="carousel-card" data-link="#"><img src="img/小歌集.png" alt="专辑4"><div class="album-name"></div></div>
+          <div class="carousel-card" data-link="#"><img src="img/和小葛去石家庄.png" alt="专辑5"><div class="album-name"></div></div>
+          <div class="carousel-card" data-link="#"><img src="img/县城.png" alt="专辑6"><div class="album-name"></div></div>
+        </div>
+        <button class="carousel-btn next">&gt;</button>
+      </div>
+    </section>
+
+    <!-- 播放器容器 -->
+    <div id="aplayer-container"></div>
+  </main>
+
+  <header class="hero">
+    <h1>刘森</h1>
+    <h2>华北无浪漫，习惯在自娱自乐中自赏，在自言自语里牢骚。近三十年的华北平原日复一日，浪与革交织，汇聚成一股不止属于我的浪潮。深海般的生活，是我心里的华北浪革。</h2>
+  </header>
+
+
+  <footer>
+    <p>© 2025 华北浪漫革命</p>
+  </footer>
+
+  <!-- APlayer JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+  <!-- JS 模块 -->
+  <script src="js/carousel.js"></script> <!-- 轮播图展示-->
+  <script src="js/player.js"></script><!--负责 APlayer 播放器初始化和设置-->
+  <script src="js/main.js"></script> <!--负责全局页面逻辑或通用功能  页面加载动画菜单或导航栏交互其他不属于轮播或播放器的 JS 功能-->
+
+</body>
+</html>

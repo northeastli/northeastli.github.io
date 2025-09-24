@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>刘森朋友现场演出集锦</title>
+
+  <!-- 引入 CSS -->
+  <link rel="stylesheet" href="../../../css/style.css">
+  <link rel="stylesheet" href="../../../css/player.css">
+  <link rel="stylesheet" href="../livevideo/live-detail.css">
+  <link rel="stylesheet" href="../../../css/sidebar.css">
+
+  <style>
+    /* ==========================================
+       多现场演出页面专用样式
+       ========================================== */
+    
+    /* 演出导航栏 */
+    .live-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .live-nav-item {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: white;
+      font-weight: bold;
+      border: 2px solid transparent;
+    }
+
+    .live-nav-item:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+
+    .live-nav-item.active {
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      border-color: #fff;
+    }
+
+    .live-nav-item h3 {
+      margin: 0 0 5px 0;
+      font-size: 1.1rem;
+    }
+
+    .live-nav-item p {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* 现场内容区域 */
+    .live-content {
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .live-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 调整live-detail样式以适应多现场 */
+    .live-content .live-detail {
+      margin-top: 0;
+    }
+
+    /* 现场演出标题 */
+    .live-content h2 {
+      color: #1e3c72;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    /* 返回按钮样式调整 */
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+
+    .back-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .live-nav {
+        flex-direction: column;
+      }
+      
+      .live-detail {
+        flex-direction: column;
+      }
+      
+      .video-section,
+      .info-section {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar" class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../../about/about.html">关于</a></li>
+        <li><a href="../../albums/albums.html">专辑</a></li>
+        <li><a href="../../singles/singles.html">单曲</a></li>
+        <li><a href="../live.html">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 页面头部 -->
+  <header>
+    <h1>刘森朋友现场演出集锦</h1>
+    <p>三场精彩演出，记录音乐路上的每一个瞬间</p>
+  </header>
+
+  <!-- 主体内容 -->
+  <main>
+    <!-- 返回按钮 -->
+    <a href="../live.html" class="back-button">← 返回现场列表</a>
+
+    <!-- 演出导航栏 -->
+    <div class="live-nav">
+      <div class="live-nav-item active" data-live="live1">
+        <h3>现场演出一</h3>
+        <p>2024.10.15 · 北京</p>
+      </div>
+      <div class="live-nav-item" data-live="live2">
+        <h3>现场演出二</h3>
+        <p>2024.11.20 · 上海</p>
+      </div>
+      <div class="live-nav-item" data-live="live3">
+        <h3>现场演出三</h3>
+        <p>2024.12.05 · 广州</p>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         现场演出一
+         ========================================== -->
+    <div id="live1" class="live-content active">
+      <h2>🎵 现场演出一 - 北京站</h2>
+      
+      <div class="live-detail">
+        <!-- 左边：视频播放器 -->
+        <div class="video-section">
+          <div class="video-container">
+            <!-- 本地视频播放器 -->
+            <video controls preload="metadata" poster="../../../../../cover/live/live1.jpg">
+              <source src="../../../../../video/缺口.mp4" type="video/mp4">
+              <source src="../../../../../video/live1.webm" type="video/webm">
+              您的浏览器不支持 HTML5 视频播放。
+            </video>
+          </div>
+        </div>
+
+        <!-- 右边：演出信息和歌词 -->
+        <div class="info-section">
+          <!-- 标签按钮 -->
+          <div class="tabs">
+            <div class="tab active" data-target="info1">演出信息</div>
+            <div class="tab" data-target="lyrics1">歌词</div>
+          </div>
+
+          <!-- 标签内容：演出信息 -->
+          <div id="info1" class="tab-content active">
+            <div class="live-info">
+              <h3>演出详情</h3>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出名称:</span>
+                <span class="detail-value">缺口 - 刘森朋友北京首演</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出时间:</span>
+                <span class="detail-value">2024年10月15日</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出地点:</span>
+                <span class="detail-value">北京·某某音乐厅</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出主题:</span>
+                <span class="detail-value">音乐与情感表达</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出介绍:</span>
+                <span class="detail-value">刘森与朋友们演绎原创作品《缺口》，用音乐填补心灵的空白，传递情感的力量。</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">参演成员:</span>
+                <span class="detail-value">刘森、朋友A、朋友B</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出曲目:</span>
+                <span class="detail-value">《缺口》</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 标签内容：歌词 -->
+          <div id="lyrics1" class="tab-content">
+            <div class="lyrics-text">
+              <h3>歌词</h3>
+              <div style="text-align: center; padding: 40px; color: #999;">
+                <p>🎵</p>
+                <p>歌词加载中...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         现场演出二
+         ========================================== -->
+    <div id="live2" class="live-content">
+      <h2>🎸 现场演出二 - 上海站</h2>
+      
+      <div class="live-detail">
+        <!-- 左边：视频播放器 -->
+        <div class="video-section">
+          <div class="video-container">
+            <!-- 本地视频播放器 -->
+            <video controls preload="metadata" poster="../../../../../cover/live/live2.jpg">
+              <source src="../../../../../video/Make You Feel My Love.mp4" type="video/mp4">
+              <source src="../../../../../video/live2.webm" type="video/webm">
+              您的浏览器不支持 HTML5 视频播放。
+              <p>如果视频无法播放，请 <a href="../../../../../video/live2.mp4" download>点击下载视频</a></p>
+            </video>
+          </div>
+        </div>
+
+        <!-- 右边：演出信息和歌词 -->
+        <div class="info-section">
+          <!-- 标签按钮 -->
+          <div class="tabs">
+            <div class="tab active" data-target="info2">演出信息</div>
+            <div class="tab" data-target="lyrics2">歌词</div>
+          </div>
+
+          <!-- 标签内容：演出信息 -->
+          <div id="info2" class="tab-content active">
+            <div class="live-info">
+              <h3>演出详情</h3>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出名称:</span>
+                <span class="detail-value">刘森朋友上海演唱会</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出时间:</span>
+                <span class="detail-value">2024年11月20日</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出地点:</span>
+                <span class="detail-value">上海·音乐厅</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出主题:</span>
+                <span class="detail-value">梦想与坚持</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出介绍:</span>
+                <span class="detail-value">在魔都的舞台上，刘森与朋友们用音乐讲述梦想的故事，展现坚持的力量。</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">参演成员:</span>
+                <span class="detail-value">刘森、朋友C、朋友D</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出曲目:</span>
+                <span class="detail-value">《追梦人》、《不忘初心》</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 标签内容：歌词 -->
+          <div id="lyrics2" class="tab-content">
+            <div class="lyrics-text">
+              <h3>歌词</h3>
+              <div style="text-align: center; padding: 40px; color: #999;">
+                <p>🎵</p>
+                <p>歌词加载中...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         现场演出三
+         ========================================== -->
+    <div id="live3" class="live-content">
+      <h2>🎤 现场演出三 - 广州站</h2>
+      
+      <div class="live-detail">
+        <!-- 左边：视频播放器 -->
+        <div class="video-section">
+          <div class="video-container">
+            <!-- 本地视频播放器 -->
+            <video controls preload="metadata" poster="../../../../../cover/live/live3.jpg">
+              <source src="../../../../../video/Whisper.mp4" type="video/mp4">
+              <source src="../../../../../video/live3.webm" type="video/webm">
+              您的浏览器不支持 HTML5 视频播放。
+              <p>如果视频无法播放，请 <a href="../../../../../video/live3.mp4" download>点击下载视频</a></p>
+            </video>
+          </div>
+        </div>
+
+        <!-- 右边：演出信息和歌词 -->
+        <div class="info-section">
+          <!-- 标签按钮 -->
+          <div class="tabs">
+            <div class="tab active" data-target="info3">演出信息</div>
+            <div class="tab" data-target="lyrics3">歌词</div>
+          </div>
+
+          <!-- 标签内容：演出信息 -->
+          <div id="info3" class="tab-content active">
+            <div class="live-info">
+              <h3>演出详情</h3>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出名称:</span>
+                <span class="detail-value">刘森朋友广州巡演</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出时间:</span>
+                <span class="detail-value">2024年12月05日</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出地点:</span>
+                <span class="detail-value">广州·体育馆</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出主题:</span>
+                <span class="detail-value">感恩与未来</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出介绍:</span>
+                <span class="detail-value">年终压轴演出，刘森与朋友们用音乐感恩过去，展望未来，为粉丝献上最真挚的演出。</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">参演成员:</span>
+                <span class="detail-value">刘森、朋友E、朋友F</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">演出曲目:</span>
+                <span class="detail-value">《感恩的心》、《未来可期》</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 标签内容：歌词 -->
+          <div id="lyrics3" class="tab-content">
+            <div class="lyrics-text">
+              <h3>歌词</h3>
+              <div style="text-align: center; padding: 40px; color: #999;">
+                <p>🎵</p>
+                <p>歌词加载中...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2025 刘森朋友音乐团队</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="../../../js/main.js"></script>
+  
+  <script>
+    // 现场演出切换功能
+    document.addEventListener('DOMContentLoaded', function() {
+      const navItems = document.querySelectorAll('.live-nav-item');
+      const liveContents = document.querySelectorAll('.live-content');
+
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // 移除所有活动状态
+          navItems.forEach(nav => nav.classList.remove('active'));
+          liveContents.forEach(content => content.classList.remove('active'));
+
+          // 添加当前选中状态
+          item.classList.add('active');
+          const targetLive = item.getAttribute('data-live');
+          document.getElementById(targetLive).classList.add('active');
+        });
+      });
+
+      // 标签切换功能（每个现场独立）
+      const allTabs = document.querySelectorAll('.tab');
+      const allTabContents = document.querySelectorAll('.tab-content');
+
+      allTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.getAttribute('data-target');
+          const parent = tab.closest('.live-content');
+          
+          // 只在当前现场内切换标签
+          const parentTabs = parent.querySelectorAll('.tab');
+          const parentContents = parent.querySelectorAll('.tab-content');
+          
+          parentTabs.forEach(t => t.classList.remove('active'));
+          parentContents.forEach(c => c.classList.remove('active'));
+          
+          tab.classList.add('active');
+          document.getElementById(target).classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

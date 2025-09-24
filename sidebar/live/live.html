@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>现场</title>
+
+  <!-- 引入全局样式 -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/sidebar.css">
+
+  <style>
+    /* 标签页居中 */
+    .tabs {
+      display: flex;
+      justify-content: center; /* 标签页居中 */
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+    }
+
+    /* =================================
+       现场作品网格布局
+       ========================================== */
+    .live-grid {
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 250px)); /* 调整尺寸范围 */
+      gap: 20px;                  /* 网格间距 */
+      margin-top: 20px;
+      justify-content: center;     /* 网格居中 */
+      max-width: 1200px;          /* 限制最大宽度 */
+      margin: 20px auto 0 auto;   /* 整个网格居中 */
+      padding: 0 20px;            /* 左右内边距 */
+    }
+
+    /* ==========================================
+       单个现场作品卡片
+       ========================================== */
+    .live-card {
+      background-color: #fff;        /* 白色卡片背景 */
+      border-radius: 15px;           /* 圆角 */
+      overflow: hidden;              /* 超出内容隐藏 */
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* 阴影效果 */
+      text-align: center;            /* 内容居中 */
+      cursor: pointer;               /* 鼠标悬停手型 */
+      transition: transform 0.3s, box-shadow 0.3s; /* 动画过渡 */
+      position: relative;            /* 为播放按钮定位 */
+      max-width: 250px;              /* 限制卡片最大宽度 */
+      margin: 0 auto;                /* 卡片居中 */
+    }
+
+    /* 卡片内图片样式 */
+    .live-card img {
+      width: 100%;                   /* 图片占满卡片宽度 */
+      height: auto;                  /* 高度自适应 */
+      aspect-ratio: 1 / 1;          /* 强制1:1比例（正方形） */
+      object-fit: cover;             /* 裁剪填充，不变形 */
+      display: block;                /* 去除默认下方空隙 */
+    }
+
+    /* 卡片信息区域 */
+    .live-card-info {
+      padding: 15px;                 /* 内边距 */
+    }
+
+    /* 卡片标题 */
+    .live-card h3 {
+      margin: 0 0 8px 0;             /* 标题间距 */
+      font-size: 1.2rem;             /* 字体大小 */
+      color: #333;                   /* 标题颜色 */
+    }
+
+    /* 卡片副标题（时间、地点等） */
+    .live-card .subtitle {
+      margin: 0 0 10px 0;            /* 副标题间距 */
+      font-size: 0.9rem;             /* 字体大小 */
+      color: #666;                   /* 副标题颜色 */
+    }
+
+    /* 播放图标覆盖层 */
+    .play-overlay {
+      position: absolute;            /* 绝对定位 */
+      top: 50%;                      /* 垂直居中 */
+      left: 50%;                     /* 水平居中 */
+      transform: translate(-50%, -50%); /* 精确居中 */
+      background: rgba(0,0,0,0.6);   /* 半透明黑色背景 */
+      border-radius: 50%;            /* 圆形 */
+      width: 60px;                   /* 宽度 */
+      height: 60px;                  /* 高度 */
+      display: flex;                 /* flex布局 */
+      align-items: center;           /* 垂直居中 */
+      justify-content: center;       /* 水平居中 */
+      opacity: 0;                    /* 默认隐藏 */
+      transition: opacity 0.3s;      /* 透明度过渡 */
+      pointer-events: none;          /* 不阻挡点击事件 */
+    }
+
+    .play-overlay::after {
+      content: "▶";                  /* 播放符号 */
+      color: #fff;                   /* 白色 */
+      font-size: 24px;               /* 字体大小 */
+      margin-left: 3px;              /* 微调位置 */
+    }
+
+    /* 卡片悬停效果 */
+    .live-card:hover {
+      transform: translateY(-5px);   /* 向上微移动 */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3); /* 阴影加深 */
+    }
+
+    .live-card:hover .play-overlay {
+      opacity: 1;                    /* 悬停时显示播放图标 */
+    }
+
+    /* ==========================================
+       选项卡内容
+       ========================================== */
+
+    .tab {
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #666;
+      transition: all 0.3s;
+    }
+
+    .tab.active {
+      color: #1e3c72;
+      border-bottom-color: #1e3c72;
+      font-weight: bold;
+    }
+
+    .tab:hover {
+      color: #1e3c72;
+    }
+
+    /* 选项卡内容 */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       侧边栏（复用）
+       ========================================== -->
+  <div id="sidebar" class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../about/about.html">关于</a></li>
+        <li><a href="../albums/albums.html">专辑</a></li>
+        <li><a href="../singles/singles.html">单曲</a></li>
+        <li><a href="live.html" class="active">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- ==========================================
+       页头
+       ========================================== -->
+  <header>
+    <h1>现场作品</h1>
+    <p>记录那些珍贵的现场时刻</p>
+  </header>
+
+  <!-- ==========================================
+       主体内容
+       ========================================== -->
+  <main>
+    <!-- 选项卡导航 -->
+    <div class="tabs">
+      <div class="tab active" data-tab="concerts">演出现场</div>
+      <div class="tab" data-tab="sessions">刘森和他的朋友们</div>
+    </div>
+
+    <!-- ==========================================
+         选项卡内容区域
+         ========================================== -->
+    
+    <!-- 演出现场 -->
+    <div id="concerts" class="tab-content active">
+      <div class="live-grid">
+        <!-- 示例现场作品卡片 -->
+        <div class="live-card" onclick="window.open('livevideo/live-detail.html', '_blank')">
+          <img src="../../../../cover/live/北京青年之声.png">
+          <div class="play-overlay"></div>
+          <div class="live-card-info">
+            <h3>华北浪漫革命首场演出</h3>
+            <p class="subtitle">2024.12.15 · 北京 · 某某Live House</p>
+          </div>
+        </div>
+
+        <div class="live-card" onclick="window.open('livevideo/yuyue.html', '_blank')">
+          <img src="cover/live2.jpg">
+          <div class="play-overlay"></div>
+          <div class="live-card-info">
+            <h3>鱼跃凭海阔(网友拟)</h3>
+            <p class="subtitle">2018/12/07 · 北京 · 乐空间</p>
+          </div>
+        </div>
+
+        <!-- 可以继续添加更多卡片 -->
+      </div>
+    </div>
+
+    <!-- 录音现场 -->
+    <div id="sessions" class="tab-content">
+      <div class="live-grid">
+        <div class="live-card" onclick="window.open('liusenfriend/liusenfriend.html', '_blank')">
+          <img src="cover/session1.jpg" alt="录音现场1">
+          <div class="play-overlay"></div>
+          <div class="live-card-info">
+            <h3>赵阿不</h3>
+            <p class="subtitle">2024.10.05 · 录音棚A</p>
+          </div>
+        </div>
+
+        <!-- 可以继续添加更多录音现场 -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==========================================
+       页脚
+       ========================================== -->
+  <footer>
+    <p>© 2025 华北浪漫革命</p>
+  </footer>
+
+  <!-- ==========================================
+       JavaScript 交互逻辑
+       ========================================== -->
+  <script src="../../js/main.js"></script>
+  
+  <script>
+    // 选项卡切换功能
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.tab');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // 移除所有活动状态
+          tabs.forEach(t => t.classList.remove('active'));
+          contents.forEach(c => c.classList.remove('active'));
+
+          // 添加当前选中状态
+          tab.classList.add('active');
+          const targetId = tab.getAttribute('data-tab');
+          document.getElementById(targetId).classList.add('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

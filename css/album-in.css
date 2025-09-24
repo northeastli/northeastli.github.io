@@ -1,0 +1,265 @@
+/* 基本布局：左边封面，右边内容 */
+    .album-detail {
+      display: flex; /* 横向排列 */
+      gap: 20px; /* 左右间距 */
+      align-items: flex-start; /* 顶部对齐 */
+    }
+
+    .album-cover {
+      flex: 2; /* 左边占一份 */
+      max-width: 300px;
+      display: flex;
+      flex-direction: column; /* 垂直排列封面和播放器 */
+      gap: 15px; /* 封面和播放器之间的间距 */
+    }
+
+    .album-info {
+      flex: 2; /* 右边占两份 */
+    }
+
+    /* 标签按钮 */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      background: #eee;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .tab:hover {
+      background: #ddd;
+    }
+
+    .tab.active {
+      background: #4285f4;
+      color: white;
+      border-color: #4285f4;
+    }
+
+    /* 内容区域 */
+    .tab-content {
+      display: none; /* 默认隐藏 */
+    }
+
+    .tab-content.active {
+      display: block; /* 只有当前的显示 */
+    }
+
+    /* 歌词高亮 */
+    #lyrics-text p.highlight {
+      color: #4285f4;
+      font-weight: bold;
+    }
+
+    /* 信息部分和现场部分的间距 */
+    .info-section {
+      margin-bottom: 40px;
+    }
+
+    /* 现场演出部分样式（内嵌版本） */
+    .live-section-inner {
+      border-top: 2px solid #eee;
+      padding-top: 30px;
+    }
+
+    /* 现场标签按钮 */
+    .live-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: 0 auto 30px auto;
+    }
+
+    .live-tab {
+      flex: 1;
+      padding: 12px 16px;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #666;
+      font-weight: 500;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .live-tab:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+
+    .live-tab.active {
+      background: #4285f4;
+      color: white;
+    }
+
+    /* 现场内容区域 */
+    .live-content {
+      max-width: 100%;
+      display: flex;
+      justify-content: center; /* 居中对齐所有内容 */
+    }
+
+    .live-tab-content {
+      display: none;
+      width: 100%; /* 确保占据整个宽度 */
+    }
+
+    .live-tab-content.active {
+      display: flex; /* 改为flex显示 */
+      justify-content: center; /* 居中对齐 */
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 视频项目样式 */
+    .video-item {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: inline-block; /* 自适应内容大小 */
+      width: auto; /* 宽度自适应 */
+    }
+
+    .video-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .video-item h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #333;
+      font-size: 1.1em;
+      text-align: center;
+    }
+
+    .video-container {
+      margin-bottom: 15px;
+      border-radius: 6px;
+      overflow: hidden;
+      display: block; /* 改为block，让视频容器更好地控制尺寸 */
+      width: 100%; /* 占满父容器 */
+      max-width: 350px; /* 限制最大宽度 */
+    }
+
+    .video-container video {
+      width: 100%; /* 占满容器宽度 */
+      height: 200px; /* 统一高度 */
+      max-width: 350px; /* 限制最大宽度 */
+      object-fit: cover; /* 按比例裁剪填充，保持统一高度 */
+      display: block;
+      border-radius: 4px; /* 添加圆角 */
+    }
+
+    .video-description {
+      margin: 0 auto; /* 水平居中 */
+      color: #666;
+      line-height: 1.6;
+      text-align: center;
+      font-style: italic;
+      font-size: 14px;
+      max-width: 300px; /* 限制描述文字宽度 */
+      display: block; /* 确保块级元素居中 */
+    }
+
+    /* ==========================================
+       视频网格布局 (通用横向视频排列)
+       ========================================== */
+    .video-grid {
+      display: flex; /* flex布局 */
+      justify-content: center; /* 居中对齐 */
+      gap: 20px; /* 视频间距 */
+      flex-wrap: wrap; /* 允许换行 */
+      width: 100%; /* 占满容器宽度 */
+    }
+
+    /* 统一视频尺寸样式类 - 适用于横向排列的视频 */
+    .video-horizontal {
+      width: 350px; /* 固定宽度 */
+      max-width: 100%; /* 响应式适配 */
+    }
+
+    .video-horizontal .video-container {
+      width: 100%;
+      max-width: 350px;
+    }
+
+    .video-horizontal .video-container video {
+      width: 100%;
+      height: 200px; /* 统一高度 */
+      object-fit: cover; /* 保持比例，统一高度 */
+      border-radius: 4px;
+    }
+
+    .video-grid .video-item {
+      margin-bottom: 0;
+      flex: 0 0 auto; /* 不伸缩，自适应内容 */
+      width: 350px; /* 固定宽度，与视频容器最大宽度一致 */
+      max-width: 100%; /* 在小屏幕下不超过容器宽度 */
+      display: flex;
+      flex-direction: column; /* 垂直排列标题、视频、描述 */
+      align-items: center; /* 水平居中 */
+    }
+
+    /* ==========================================
+       媒体查询：响应式适配
+       ========================================== */
+    @media (max-width: 768px) {
+      .album-detail {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .album-cover {
+        max-width: 100%;
+      }
+      .live-tabs {
+        max-width: 100%;
+        margin: 0 0 20px 0;
+      }
+      .live-tab {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+      .video-item {
+        padding: 15px;
+        margin-bottom: 15px;
+      }
+      .video-grid {
+        flex-direction: column; /* 小屏幕下改为垂直排列 */
+        align-items: center; /* 居中对齐 */
+      }
+      .video-grid .video-item {
+        width: 100%; /* 小屏幕下占满宽度 */
+        max-width: 100%;
+      }
+      .video-horizontal {
+        width: 100%; /* 小屏幕下占满宽度 */
+      }
+      .video-horizontal .video-container {
+        max-width: 100%;
+      }
+      .video-horizontal .video-container video {
+        width: 100%; /* 小屏幕下视频宽度占满 */
+        height: 180px; /* 小屏幕下稍微降低高度 */
+      }
+    }

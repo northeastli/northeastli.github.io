@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>云南来信 - 专辑详情</title>
+
+  <!-- 引入 CSS -->
+  <link rel="stylesheet" href="../../../../css/album-detail.css">
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <link rel="stylesheet" href="../../../../css/player.css">
+  <link rel="stylesheet" href="../../../../css/sidebar.css">
+  <link rel="stylesheet" href="../../../../css/album-in.css">
+  <!-- APlayer 样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+
+</head>
+<body>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar" class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../../about/about.html">关于</a></li>
+        <li><a href="../../albums.html" class="active">专辑</a></li>
+        <li><a href="../../singles/singles.html">单曲</a></li>
+        <li><a href="../../live/live.html">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 页面头部 -->
+  <header>
+    <h1>云南来信</h1>
+  </header>
+
+  <!-- 主体内容 -->
+<main> <!-- 页面主体区域（HTML5语义标签），主要内容都写在这里 -->
+  <div class="album-detail"> <!-- 专辑详情的整体容器，通常用于控制左右布局 -->
+
+    <!-- 左边：专辑封面和播放器 -->
+    <div class="album-cover"> <!-- 左侧容器，放封面图和播放器 -->
+      
+      <!-- 专辑封面图片 -->
+      <img src="../../../albums/cover/无边界音乐/云南来信.png" 
+           alt="云南来信" 
+           width="100%">
+      
+      <!-- 播放器容器 -->
+      <div id="aplayer-container"></div> <!-- 用来挂载音乐播放器(APlayer等)，JS会在这里渲染 -->
+    </div>
+
+    <!-- 右边：专辑信息 -->
+    <div class="album-info"> <!-- 右侧容器，放专辑的介绍、歌曲列表、歌词等 -->
+      
+      <!-- 上半部分：简介和歌词 -->
+      <div class="info-section">
+        <!-- 标签按钮 -->
+        <div class="tabs">
+          <div class="tab active" data-target="intro">简介</div>
+          <div class="tab" data-target="lyrics">歌词</div>
+        </div>
+
+        <!-- 标签内容：简介 -->
+        <div id="intro" class="tab-content active">
+          <h2>专辑简介</h2>
+          <p> 诗者，志之所之也。在心为志，发言为诗。<p> 
+          <p> 雷平阳的诗立足于云南本土，充满在地性，将故乡人事、风土风物皆摹化作诗，叙事与音律并重，情绪内敛而深沉，且充满着浓烈的乡愁，将云南过去与现在的魅惑、汉人与异邦的纠葛、语焉不详的历史在有限的空间里表达了出来，以诗言志。<p> 
+          <p>《云南来信》为诗人雷平阳和独立创作人秋秋叶合作出品的音乐专辑，根据雷平阳的三首诗《高速公路》《敌意》《白鹳》谱写成曲，旋律上各有特点。它是来自云南的信，也是写给云南的情书。整张专辑既寓意了现代都市人的精神乡愁，又指向了无可慰藉的存在危机。</p>
+        </div>
+
+        <!-- 标签内容：歌词 -->
+        <div id="lyrics" class="tab-content">
+          <h2>歌词</h2>
+          <div id="lyrics-text">
+            <!-- 歌词将由 JS 动态生成 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 下半部分：现场演出 -->
+      <div class="live-section-inner">
+        <!-- 现场标签按钮 -->
+        <div class="live-tabs">
+          <div class="live-tab active" data-target="live-diyi">敌意</div> 
+          <!-- active 是在默认加载的时候被选中 -->
+          <div class="live-tab" data-target="live-baiguan">白鹳</div>
+        </div>
+
+        <!-- 现场内容区域 -->
+        <div class="live-content">
+    
+          <!-- 敌意现场 -->
+          <div id="live-diyi" class="live-tab-content active">
+            <div class="video-item">
+              <div class="video-container">
+                <video controls width="100%">
+                  <source src="../../../../../../video/敌意.mp4" type="video/mp4">
+                  您的浏览器不支持视频播放。
+                </video>
+              </div>
+              <p class="video-description">现场演出版本，情绪更加直接而强烈。</p>
+            </div>
+          </div>
+
+          <!-- 白鹳现场 -->
+          <div id="live-baiguan" class="live-tab-content">
+            <div class="video-grid">
+              <div class="video-item video-horizontal">
+                <h3>版本一</h3>
+                <div class="video-container">
+                  <video controls>
+                    <source src="../../../../../../video/白鹳首发会.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                  </video>
+                </div>
+                <p class="video-description">第一个现场版本，简约的编排突出了歌曲的诗意。</p>
+              </div>
+              
+              <div class="video-item video-horizontal">
+                <h3>版本二</h3>
+                <div class="video-container">
+                  <video controls>
+                    <source src="../../../../../../video/末端白鹳.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                  </video>
+                </div>
+                <p class="video-description">第二个现场版本，更加丰富的音乐层次。</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2025 华北浪漫革命</p>
+  </footer>
+
+  <!-- APlayer JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <!-- 歌词管理器 -->
+  <script src="../../../../js/lyrics-manager.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 初始化歌词管理器
+  const lyricsManager = new LyricsManager({
+    lyricsContainerId: 'lyrics-text',
+    highlightClass: 'highlight'
+  });
+
+  // ---------- 标签切换逻辑 ----------
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // ---------- 现场标签切换逻辑 ----------
+  const liveTabs = document.querySelectorAll('.live-tab');
+  const liveContents = document.querySelectorAll('.live-tab-content');
+
+  liveTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      liveTabs.forEach(t => t.classList.remove('active'));
+      liveContents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // ---------- 初始化 APlayer ----------
+  let ap; // 声明播放器变量，稍后异步初始化
+
+  // 从JSON文件加载专辑数据
+  async function loadAlbumData() {
+    try {
+      console.log('开始加载JSON文件...');
+      const response = await fetch('./yunnan-laixin.json');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP错误! 状态: ${response.status}`);
+      }
+      
+      const albumData = await response.json();
+      console.log('JSON文件加载成功:', albumData);
+      
+      // 验证音频文件路径
+      albumData.trackList.forEach((track, index) => {
+        console.log(`歌曲 ${index + 1} - ${track.name}:`);
+        console.log(`  音频: ${track.url}`);
+        console.log(`  封面: ${track.cover}`);
+        console.log(`  歌词: ${track.lrc}`);
+      });
+      
+      // 更新专辑简介内容
+      const introContent = document.querySelector('#intro p:last-child');
+      if (introContent && albumData.albumInfo.description) {
+        introContent.textContent = albumData.albumInfo.description;
+      }
+      
+
+      // 绑定播放器事件
+      bindPlayerEvents();
+      
+      // 绑定歌词管理器到播放器
+      lyricsManager.bindPlayer(ap);
+      
+      console.log('专辑数据加载成功:', albumData);
+      
+    } catch (error) {
+      console.error('加载专辑数据失败:', error);
+      console.log('使用备用数据...');
+      // 如果JSON加载失败，使用备用数据
+      ap = new APlayer({
+        container: document.getElementById('aplayer-container'),
+        fixed: false,
+        autoplay: false,
+        theme: '#FADFA3',
+        loop: 'all',
+        listFolded: false,
+        audio: [
+          {
+            name: '高速公路',
+            artist: '秋秋叶',
+            url: '../../../../../../audio/无边界音乐/高速公路.flac',
+            cover: '../../../albums/cover/无边界音乐/云南来信.png',
+            lrc: '../../../../../../audio/无边界音乐/高速公路.lrc'
+          },
+          {
+            name: '敌意',
+            artist: '秋秋叶', 
+            url: '../../../../../../audio/无边界音乐/敌意.flac',
+            cover: '../../../albums/cover/无边界音乐/云南来信.png',
+            lrc: '../../../../../../audio/无边界音乐/敌意.lrc'
+          },
+          {
+            name: '白鹳',
+            artist: '秋秋叶',
+            url: '../../../../../../audio/无边界音乐/白鹳.flac', 
+            cover: '../../../albums/cover/无边界音乐/云南来信.png',
+            lrc: '../../../../../../audio/无边界音乐/白鹳.lrc'
+          }
+        ]
+      });
+      bindPlayerEvents();
+      
+      // 绑定歌词管理器到播放器
+      lyricsManager.bindPlayer(ap);
+    }
+  }
+
+  // 绑定播放器事件的函数
+  function bindPlayerEvents() {
+    // 等待 APlayer 加载完成后绑定事件
+    ap.on('canplay', () => {
+      console.log('APlayer 准备完成，可以播放了');
+      console.log('音频时长:', ap.audio.duration, '秒');
+      console.log('音频源:', ap.audio.src);
+    });
+
+    // 监听加载错误
+    ap.on('error', (e) => {
+      console.error('APlayer 加载失败:', e);
+      console.error('错误详情:', e.target ? e.target : '无详细信息');
+    });
+
+    // 监听音频加载错误
+    ap.audio.addEventListener('error', (e) => {
+      console.error('音频文件加载失败:', e);
+      console.error('当前音频源:', ap.audio.src);
+      console.error('音频错误代码:', ap.audio.error ? ap.audio.error.code : '未知');
+      console.error('音频错误信息:', ap.audio.error ? ap.audio.error.message : '无信息');
+    });
+
+    // 监听音频加载开始
+    ap.audio.addEventListener('loadstart', () => {
+      console.log('开始加载音频:', ap.audio.src);
+    });
+
+    // 监听音频元数据加载完成
+    ap.audio.addEventListener('loadedmetadata', () => {
+      console.log('音频元数据加载完成');
+      console.log('音频时长:', ap.audio.duration);
+      console.log('音频格式支持:', ap.audio.canPlayType('audio/flac'));
+    });
+  }
+
+
+
+  // 启动应用：加载专辑数据并初始化播放器
+  loadAlbumData();
+
+});
+</script>
+
+
+
+
+</body>
+</html>

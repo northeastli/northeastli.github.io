@@ -1,0 +1,30 @@
+{
+  "albumInfo": {
+    "name": "云南来信",
+    "artist": "秋秋叶",
+    "cover": "../../../albums/cover/无边界音乐/云南来信.png"
+  },
+  "trackList": [
+    {
+      "name": "高速公路",
+      "artist": "秋秋叶",
+      "url": "../../../../../../audio/无边界音乐/高速公路.flac",
+      "cover": "../../../albums/cover/无边界音乐/云南来信.png",
+      "lrc": "../../../../../../audio/无边界音乐/高速公路.lrc"
+    },
+    {
+      "name": "敌意",
+      "artist": "秋秋叶",
+      "url": "../../../../../../audio/无边界音乐/敌意.flac",
+      "cover": "../../../albums/cover/无边界音乐/云南来信.png",
+      "lrc": "../../../../../../audio/无边界音乐/敌意.lrc"
+    },
+    {
+      "name": "白鹳",
+      "artist": "秋秋叶",
+      "url": "../../../../../../audio/无边界音乐/白鹳.flac",
+      "cover": "../../../albums/cover/无边界音乐/云南来信.png",
+      "lrc": "../../../../../../audio/无边界音乐/白鹳.lrc"
+    }
+  ]
+}

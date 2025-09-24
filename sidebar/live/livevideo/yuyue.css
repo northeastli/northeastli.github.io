@@ -1,0 +1,203 @@
+/* ==========================================
+   鱼跃凭海阔页面专用样式
+   基础样式继承自 live-detail.css
+   ========================================== */
+
+/* 多演出区域样式 */
+.performance-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.performance-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #1e3c72;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white !important;
+  border-radius: 15px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* 背景故事标签的特殊样式 */
+.story-content {
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.story-content h2 {
+  color: #1e3c72;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.story-text {
+  line-height: 1.8;
+  color: #333;
+}
+
+.story-text p {
+  margin-bottom: 15px;
+  padding: 15px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.story-text p:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* 歌词样式优化 */
+/* 歌词内容的背景设置为蓝紫色渐变 */
+.lyrics-content {
+  /* 内边距，确保内容与容器边缘有一定距离 */
+  padding: 20px;
+  /* 背景设置为从蓝色到紫色的渐变，角度为135度 */
+  background: #fff; 
+  /* 圆角边框，增加视觉柔和感 */
+  border-radius: 15px;
+  /* 顶部外边距，增加与其他元素的间距 */
+  margin-top: 10px;
+}
+
+.lyric-line {
+  /* 歌词文字颜色设置为接近白色 */
+  color: rgb(8, 8, 8);
+  /* 字体大小设置为1.1rem，确保清晰可读 */
+  font-size: 1.1rem;
+  /* 行高设置为2，增加行间距 */
+  line-height: 1;
+  /* 每行歌词的底部外边距，增加间隔 */
+  margin-bottom: 8px;
+  /* 内边距，确保文字与边框有一定距离 */
+  padding: 8px 15px;
+  /* 圆角边框，增加视觉柔和感 */
+  border-radius: 8px;
+  /* 添加过渡效果，提升交互体验 */
+  transition: all 0.3s ease;
+  /* 鼠标悬停时显示为可点击状态 */
+  cursor: pointer;
+}
+
+.lyric-line:hover {
+  /* 鼠标悬停时的背景颜色，设置为白色透明 */
+  background: rgba(255,255,255,0.2);
+  /* 鼠标悬停时的位移效果 */
+  transform: translateX(10px);
+}
+
+.lyric-line:empty {
+  /* 空行的底部外边距，保持布局一致 */
+  margin-bottom: 15px;
+}
+
+/* 歌词高亮样式 */
+.lyric-line.highlight {
+  /* 高亮时的背景颜色，设置为白色半透明 */
+  background: rgba(255,255,255,0.4) !important;
+  /* 高亮时的位移效果 */
+  transform: translateX(15px) !important;
+  /* 高亮时加粗字体 */
+  font-weight: bold;
+  /* 高亮时添加阴影效果 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* 歌词容器样式 */
+.lyrics-container {
+  /* 最大高度设置为400px，确保内容不会超出容器 */
+  max-height: 400px;
+  /* 启用垂直滚动条，方便浏览长内容 */
+  overflow-y: auto;
+  /* 内边距，确保内容与容器边缘有一定距离 */
+  padding: 10px;
+}
+
+/* 覆盖video-info-card样式 */
+.video-info-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  border: 1px solid #e9ecef;
+}
+
+.video-info-card h4 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white !important;
+  padding: 8px 15px;
+  margin: -15px -15px 15px -15px;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+}
+
+/* 演出信息的特殊高亮 */
+.live-info .detail-item:nth-child(2) .detail-value,
+.live-info .detail-item:nth-child(4) .detail-value {
+  color: #667eea;
+  font-weight: bold;
+}
+
+/* 页面头部的特殊样式 */
+header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  margin-bottom: 30px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* 覆盖返回按钮样式 */
+.back-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #667eea 100%) !important;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  transform: translateY(-2px) !important;
+}
+
+/* 响应式设计补充 */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2rem;
+  }
+  
+  header p {
+    font-size: 1rem;
+  }
+  
+  .story-text p {
+    padding: 12px;
+  }
+  
+  .lyric-line {
+    font-size: 1rem;
+  }
+}

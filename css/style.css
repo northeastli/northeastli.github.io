@@ -1,0 +1,156 @@
+/* ============================
+   全局样式
+============================ */
+body {
+  font-family: "Microsoft YaHei", sans-serif; /* 页面整体字体 */
+  margin: 0;        /* 去掉默认外边距 */
+  padding: 0;       /* 去掉默认内边距 */
+  background-color: #e2dfdf; /* 页面背景色 */
+  color: #333;      /* 默认文字颜色 */
+}
+
+header, footer {
+  text-align: center;          /* 居中显示文字 */
+  padding: 20px;               /* 内边距 */
+  background-color: #e2dfdf;      /* 背景颜色 */
+}
+
+/* 
+ * 注意：页面中有两个 header 元素：
+ * 1. 第一个 header - 包含"华北浪漫革命"标题（普通header，会受侧边栏影响）
+ * 2. 第二个 header.hero - 包含"刘森"和描述文字（特殊header，不受侧边栏影响）
+ */
+
+/* ============================
+   主内容区样式
+============================ */
+
+/* 默认主内容左边距，给侧边栏留空间 */
+main {
+  margin-left: 60px;            /* 初始左边距 = 侧边栏收缩宽度(60px) */
+  transition: margin-left 0.3s ease; /* 左边距变化时的动画过渡效果 */
+  padding: 20px;                /* 内边距 */
+}
+
+/* 当侧边栏展开时，主内容整体右移 */
+/* 
+ * CSS 选择器详细解释：
+ * 1. body.sidebar-open - 选择同时具有 body 标签和 sidebar-open 类的元素
+ * 2. header:not(.hero) - 选择所有 header 元素，但排除具有 .hero 类的 header
+ * 3. main - 选择所有 main 元素
+ * 
+ * 整体含义：当 body 元素具有 sidebar-open 类时：
+ * - 所有普通的 header 元素（不包括 .hero 类的 header）向右移动 200px
+ * - 所有 main 元素向右移动 200px
+ * - .hero 类的 header 不受影响，保持原位置
+ */
+/* body.sidebar-open header:not(.hero),     */
+/* 侧边栏展开时：普通header元素右移 */
+/* body.sidebar-open main {               */
+    /* 侧边栏展开时：main元素右移 */
+  /* margin-left: 200px;                   */
+   /* 左边距 = 展开后侧边栏宽度 */
+/* } */
+
+
+
+
+    /* ==========================================
+       选项卡导航容器
+       ========================================== */
+.tabs {
+  display: flex;                     /* 横向排列选项卡 */
+  margin: 20px 0;                    /* 上下间距 */
+  border-bottom: 2px solid #ccc;     /* 底部边框，用作分隔线 */
+}
+
+/* ==========================================
+    单个选项卡样式
+    ========================================== */
+.tab {
+  padding: 10px 20px;                /* 内边距，扩大点击区域 */
+  cursor: pointer;                   /* 鼠标悬停手型 */
+  font-weight: bold;                 /* 字体加粗 */
+  border-bottom: 3px solid transparent; /* 初始无底部高亮 */
+  transition: all 0.3s ease;         /* 动画过渡 */
+}
+
+/* 当前活动选项卡高亮 */
+.tab.active {
+  border-bottom-color: #1e3c72; /* 底部蓝色高亮 */
+  color: #1e3c72;               /* 字体颜色变化 */
+}
+
+/* ==========================================
+    选项卡内容容器
+    ========================================== */
+.tab-content {
+  display: none;                /* 默认隐藏，设置为 block 可显示所有内容 */
+  margin-top: 20px;             /* 顶部间距 */
+}
+
+/* 当前活动选项卡内容显示 */
+.tab-content.active {
+  display: block;
+}
+
+/* 这是歌词提示框样式 */
+#lyric-box {
+  position: fixed;           /* 固定定位，相对于浏览器窗口，不随页面滚动而移动 */
+  bottom: 20px;              /* 底部距离窗口底部 20px */
+  left: 50%;                 /* 水平居中：左边缘在窗口宽度的 50% */
+  transform: translateX(-50%); /* 进一步向左平移自身宽度的一半，实现真正居中 */
+  background: rgba(0, 0, 0, 0.7); /* 半透明黑色背景，0.7 表示透明度 */
+  color: #fff;               /* 字体颜色白色 */
+  padding: 10px 20px;        /* 内边距：上下 10px，左右 20px */
+  border-radius: 8px;        /* 圆角边框，半径 8px */
+  font-size: 16px;           /* 字体大小 16px */
+  cursor: pointer;           /* 鼠标悬停时显示手型，表示可点击 */
+  transition: opacity 0.5s;  /* 透明度变化时平滑过渡 0.5 秒，用于渐隐渐现效果 */
+  z-index: 9999;             /* 层级很高，确保在页面最上层，不被其他元素遮挡 */
+}
+
+
+
+/* Header 容器样式 */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* 渐变背景 */
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+  }
+
+  .hero h2 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.8;
+    max-width: 800px;
+    color: #e0e0e0;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+  }
+
+    /* 响应式适配小屏幕 */
+  @media (max-width: 600px) {
+    .hero h1 {
+      font-size: 2.2rem;
+    }
+    .hero h2 {
+      font-size: 1rem;
+      padding: 0 10px;
+    }
+  }

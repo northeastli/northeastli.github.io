@@ -1,0 +1,54 @@
+/* ============================
+   侧边栏样式
+============================ */
+
+/* 侧边栏基础样式 */
+.sidebar {
+  position: fixed;              /* 固定在页面左侧，不随滚动移动 */
+  top: 0;                       /* 顶部对齐 */
+  left: 0;                      /* 左侧对齐 */
+  width: 60px;                  /* 初始宽度，只显示箭头图标 */
+  height: 100%;                 /* 高度占满整个视口 */
+  background-color: #1e3c72;   /* 侧边栏背景色 */
+  color: #fff;                  /* 文字颜色为白色 */
+  transition: width 0.3s ease;  /* 宽度变化时添加动画过渡 */
+  display: flex;                /* 使用 flex 布局 */
+  flex-direction: column;       /* 垂直排列内容 */
+  align-items: center;          /* 水平居中 */
+  z-index: 100;                 /* 保证在其他元素上方 */
+  overflow: hidden;             /* 超出部分隐藏 */
+}
+
+/* 展开状态 */
+.sidebar.open {
+  width: 200px;                 /* 展开后宽度 200px */
+}
+
+
+/* 导航列表容器 */
+.sidebar-nav {
+  margin-top: 50px;             /* 距离顶部 50px */
+  width: 100%;                  /* 占满侧边栏宽度 */
+}
+
+.sidebar-nav ul {
+  list-style: none;             /* 去掉默认列表符号 */
+  padding: 0;                   /* 内边距清零 */
+  margin: 0;                    /* 外边距清零 */
+}
+
+.sidebar-nav li {
+  width: 100%;                  /* 列表项占满宽度 */
+}
+
+.sidebar-nav a {
+  display: block;               /* 链接占满整行 */
+  padding: 15px 20px;           /* 内边距 */
+  color: #fff;                  /* 链接文字颜色 */
+  text-decoration: none;        /* 去掉下划线 */
+  transition: background 0.3s;  /* 悬停时背景过渡动画 */
+}
+
+.sidebar-nav a:hover {
+  background-color: rgba(255,255,255,0.1); /* 悬停高亮效果 */
+}

@@ -1,0 +1,111 @@
+/* album-detail.css - 专辑显示页面统一样式 */
+
+/* ==========================================
+   专辑卡片通用基础样式 (适用于所有专辑卡片)
+   ========================================== */
+.album-card {
+  background-color: #fff;        /* 卡片背景为白色 */
+  border-radius: 15px;           /* 卡片四角圆角，视觉柔和 */
+  overflow: hidden;              /* 超出边界的内容隐藏，确保圆角效果 */
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* 卡片阴影，增加浮雕感 */
+  transition: transform 0.3s, box-shadow 0.3s; /* 悬停动画过渡效果 */
+  cursor: pointer;               /* 鼠标悬停手型 */
+}
+
+/* 卡片内图片通用样式 */
+.album-card img {
+  width: 100%;                   /* 图片占满卡片宽度 */
+  object-fit: cover;             /* 图片按比例裁剪填充，不变形 */
+  display: block;                /* 去掉默认图片下方空隙 */
+}
+
+/* 卡片悬停效果 (所有卡片通用) */
+.album-card:hover {
+  transform: translateY(-5px);   /* 向上微移动 */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3); /* 阴影加深 */
+}
+
+/* ==========================================
+   专辑详情页卡片样式 (单个专辑详细信息显示)
+   ========================================== */
+.album-card.detail {
+  max-width: 800px;              /* 详情页卡片较宽 */
+  margin: 40px auto;             /* 上下外边距40px，左右自动居中 */
+  text-align: left;              /* 详情页内容左对齐 */
+}
+
+/* 详情页图片样式 */
+.album-card.detail img {
+  height: 300px;                 /* 详情页图片固定高度 */
+}
+
+/* =============================
+   专辑信息容器
+   ============================= */
+.album-info {
+  padding: 20px;          /* 内边距，让文字和边缘保持距离 */
+  text-align: left;       /* 左对齐文字 */
+}
+
+/* -----------------------------
+   专辑标题样式
+   ----------------------------- */
+.album-info h3 {
+  font-size: 1.5rem;      /* 字体大小，突出显示标题 */
+  margin-bottom: 10px;    /* 标题和正文间距 */
+}
+
+/* -----------------------------
+   专辑简介文字样式
+   ----------------------------- */
+.album-info p {
+  margin-bottom: 15px;    /* 段落底部间距，让内容不挤 */
+}
+
+/* =============================
+   曲目列表样式
+   ============================= */
+.album-tracks {
+  list-style: decimal inside; /* 使用数字列表，数字在内容内显示 */
+  margin-bottom: 15px;        /* 底部间距，让播放器有空间 */
+}
+
+.album-tracks li {
+  margin: 5px 0;              /* 列表项上下间距，保持可读性 */
+}
+
+
+/* ==========================================
+   专辑网格布局 (专辑列表展示页面)
+   ========================================== */
+.albums-grid {
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(150px, 200px)); /* 自适应网格，最小150px，最大200px */
+  gap: 15px;                     /* 网格间距 */
+  padding: 0 20px;               /* 左右内边距 */
+  justify-content: center;       /* 网格居中 */
+  max-width: 1200px;             /* 限制最大宽度 */
+  margin: 0 auto;                /* 整个网格居中 */
+}
+
+/* ==========================================
+   网格中的专辑卡片样式 (专辑列表中的小卡片)
+   ========================================== */
+.albums-grid .album-card {
+  max-width: 200px;              /* 网格卡片最大宽度 */
+  margin: 0 auto;                /* 卡片居中 */
+  text-align: center;            /* 网格卡片内容居中 */
+}
+
+/* 网格卡片中的图片样式 */
+.albums-grid .album-card img {
+  height: auto;                  /* 高度自适应 */
+  aspect-ratio: 1 / 1;          /* 强制1:1比例（正方形） */
+}
+
+/* 网格卡片标题 */
+.albums-grid .album-card h3 {
+  margin: 10px 0;                /* 上下间距 */
+  font-size: 1.1rem;             /* 字体大小 */
+  padding: 0 10px;               /* 左右内边距，防止文字贴边 */
+}

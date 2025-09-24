@@ -6,9 +6,11 @@
 
   <!-- 引入 CSS -->
   <link rel="stylesheet" href="../../../../css/album-detail.css">
+  <link rel="stylesheet" href="../../../../css/album-in.css">
   <link rel="stylesheet" href="../../../../css/style.css">
   <link rel="stylesheet" href="../../../../css/carousel.css">
   <link rel="stylesheet" href="../../../../css/player.css">
+  <link rel="stylesheet" href="../../../../css/sidebar.css">
   <!-- APlayer 样式 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 
@@ -78,7 +80,6 @@
 
   <!-- 侧边栏 -->
   <div id="sidebar" class="sidebar">
-    <button id="sidebar-toggle" class="sidebar-toggle">&#x25B6;</button>
     <nav class="sidebar-nav">
       <ul>
         <li><a href="../../../about/about.html">关于</a></li>
@@ -100,7 +101,7 @@
 
       <!-- 左边：专辑封面和播放器 -->
       <div class="album-cover">
-        <img src="../../cover/到明天.jpg" alt="到明天" width="100%">
+        <img src="../../../../img/cover/到明天.jpg" alt="到明天" width="100%">
         
         <!-- 播放器容器 -->
         <div id="aplayer-container"></div>
@@ -199,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
         name: '到明天',
         artist: '秋秋叶',
         url: '../../../../../../audio/秋秋叶/到明天 - 刘森.mp3',
-        cover: '../../cover/到明天.jpg'
+        cover: '../../../../img/cover/到明天.jpg'
       }
     ]
   });

@@ -9,11 +9,30 @@ body {
   color: #333;      /* 默认文字颜色 */
 }
 
-header, footer {
+header {
   text-align: center;          /* 居中显示文字 */
-  padding: 20px;               /* 内边距 */
+  padding: 10px;               /* 内边距 */
   background-color: #e2dfdf;   /* 背景颜色 */
   margin-left: 60px;           /* 左边距，和主内容区一致 */
+
+  /* 设置字体为京华老宋体 */
+  font-family: "仿宋", "Microsoft YaHei", Arial, sans-serif; 
+  font-size: 20px;             /* 字体大小 */
+  font-weight: bold;           /* 字体粗细 */
+  color: #333;                 /* 字体颜色 */
+}
+
+footer {
+  position: fixed;             /* 固定定位 */
+  bottom: 0;                   /* 固定在页面底部 */
+  left: 60px;                  /* 左边距，避开侧边栏 */
+  right: 0;                    /* 延伸到页面右边 */
+  text-align: center;          /* 居中显示文字 */
+  padding: 1vh 20px;           /* 使用视口高度单位，自适应调整 */
+  background-color: #e2dfdf;   /* 背景颜色 */
+  z-index: 50;                 /* 确保在其他内容上方 */
+  height: auto;                /* 高度自适应 */
+  min-height: 40px;            /* 最小高度 */
 }
 
 
@@ -26,6 +45,8 @@ main {
   margin-left: 60px;            /* 初始左边距 = 侧边栏收缩宽度(60px) */
   transition: margin-left 0.3s ease; /* 左边距变化时的动画过渡效果 */
   padding: 20px;                /* 内边距 */
+  padding-bottom: 35vh;         /* 底部预留空间给hero section，使用视口高度单位 */
+  margin-bottom: 0;             /* 确保没有额外的外边距 */
 }
 
 
@@ -36,6 +57,7 @@ main {
   display: flex;                     /* 横向排列选项卡 */
   margin: 20px 0;                    /* 上下间距 */
   border-bottom: 2px solid #ccc;     /* 底部边框，用作分隔线 */
+  justify-content: center; /* 在可用空间内居中 */
 }
 
 /* ==========================================
@@ -88,17 +110,24 @@ main {
 
 /* Header 容器样式 */
   .hero {
+    position: fixed;             /* 固定定位 */
+    bottom: 8vh;                 /* 使用视口高度单位，距离底部8%的视口高度 */
+    left: 60px;                  /* 左边距，避开侧边栏 */
+    right: 0;                    /* 延伸到页面右边 */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 80px 20px;
+    padding: 3vh 20px;           /* 使用视口高度单位，自适应padding */
     text-align: center;
     background: linear-gradient(135deg, #1e3c72, #2a5298); /* 渐变背景 */
     color: #fff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 60;                 /* 在footer上方，层级更高 */
+    max-height: 25vh;            /* 最大高度限制，避免在小屏幕上太高 */
+    overflow-y: auto;            /* 内容过多时可以滚动 */
   }
 
   .hero h1 {
@@ -120,11 +149,50 @@ main {
 
     /* 响应式适配小屏幕 */
   @media (max-width: 600px) {
+    main {
+      padding-bottom: 40vh;      /* 小屏幕时增加底部间距 */
+    }
+    .hero {
+      bottom: 12vh;              /* 小屏幕时增加距离底部的空间 */
+      padding: 2vh 15px;         /* 减少padding */
+      max-height: 20vh;          /* 限制最大高度 */
+    }
     .hero h1 {
       font-size: 2.2rem;
     }
     .hero h2 {
       font-size: 1rem;
       padding: 0 10px;
+    }
+    footer {
+      padding: 0.8vh 15px;       /* 小屏幕时减少padding */
+      min-height: 35px;
+    }
+  }
+
+  /* 中等屏幕适配 */
+  @media (max-width: 900px) and (min-width: 601px) {
+    main {
+      padding-bottom: 38vh;      /* 中等屏幕时的底部间距 */
+    }
+    .hero {
+      bottom: 10vh;              /* 中等屏幕时的距离 */
+      padding: 2.5vh 18px;
+      max-height: 22vh;
+    }
+    footer {
+      padding: 1.2vh 18px;
+    }
+  }
+
+  /* 大屏幕优化 */
+  @media (min-width: 1200px) {
+    main {
+      padding-bottom: 32vh;      /* 大屏幕时的底部间距 */
+    }
+    .hero {
+      bottom: 6vh;               /* 大屏幕时可以更紧凑 */
+      padding: 4vh 25px;
+      max-height: 30vh;
     }
   }

@@ -8,7 +8,8 @@
   top: 0;                       /* 顶部对齐 */
   left: 0;                      /* 左侧对齐 */
   width: 60px;                  /* 初始宽度，只显示箭头图标 */
-  height: 100%;                 /* 高度占满整个视口 */
+  height: 100vh;                /* 高度占满视口高度 */
+  max-height: 100vh;            /* 最大高度不超过视口 */
   background-color: #1e3c72;   /* 侧边栏背景色 */
   color: #fff;                  /* 文字颜色为白色 */
   transition: width 0.3s ease;  /* 宽度变化时添加动画过渡 */

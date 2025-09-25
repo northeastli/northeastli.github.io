@@ -4,11 +4,30 @@
    ========================================= */
 
 #album-carousel {
-  margin: 60px auto;
-  width: 98%;              /* 占据页面98%宽度 */
-  text-align: center;
+  /* ===== 位置设置 ===== */
+  margin: 20px auto;       /* 上下外边距60px，左右auto实现水平居中 */
+  
+  /* ===== 宽度设置 ===== */
+  width: 100%;             /* 拉满整体宽度，便于把按钮放到整体两端或侧卡片上方 */
+                           /* 可选值: 
+                              - 30% = 较窄，适合小屏幕
+                              - 50% = 中等宽度，当前设置
+                              - 70% = 较宽，适合大屏幕
+                              - 80% = 很宽，几乎占满
+                              - 100% = 占满整个容器宽度 */
+  
+  /* ===== 对齐设置 ===== */
+  text-align: center;      /* 内部内容居中对齐 */
+  
+  /* ===== 内边距设置 ===== */
+  padding: 40px 30px;      /* 可按需调整，与按钮绝对定位无强耦合 */
+                           /* 格式: padding: 上下 左右 */
+                           /* 可选值:
+                              - padding: 20px 15px; = 更紧凑
+                              - padding: 40px 30px; = 当前设置
+                              - padding: 60px 50px; = 更宽松 */
+  
   /* 移除背景颜色 */
-  padding: 40px 30px;      /* 调整内边距 */
   /* 移除阴影 */
 } 
 
@@ -18,11 +37,11 @@
 
 .carousel-container {
   position: relative;
-  width: 60%;              /* 占据页面95%宽度 */
+  width: 100%;             /* 占满整个轮播块宽度，让按钮位于整体两端 */
   max-width: none;         /* 移除最大宽度限制 */
   margin: 0 auto;
   overflow: visible;       /* 确保按钮可见 */
-  padding: 60px 100px;     /* 减少内边距，为按钮留出空间 */
+  padding: 60px 0;         /* 仅保留上下内边距，去掉左右，让按钮贴近两侧 */
   height: 500px;           /* 增加高度适应大卡片 */
   perspective: 1200px;     /* 增强3D透视效果 */
 }
@@ -41,7 +60,8 @@
   height: 100%;            
   position: relative;
   transform-style: preserve-3d; /* 保持3D变换 */
-  width: 100%;             /* 占满容器宽度 */
+  width: 100%;             /* 轨道占满容器，侧边隐藏卡片区域更靠近容器两端 */
+  margin: 0 auto;
 }
 
 /* =========================================
@@ -63,6 +83,7 @@
   cursor: pointer;
   transform-origin: center center;
   border: 3px solid rgba(255, 255, 255, 0.3);
+  z-index: 1;              /* 基础层级，具体层级由状态类提升 */
 }
 
 
@@ -77,11 +98,11 @@
     translateZ(0) 
     scale(1) 
     rotateY(0deg) !important;
-  z-index: 10;
+  z-index: 100 !important;   /* 强制最高层级，确保位于最上层 */
   box-shadow: 
     0 35px 80px rgba(0, 0, 0, 0.5),
     0 25px 50px rgba(0, 0, 0, 0.3),
-    inset 0 0 0 3px rgba(255, 255, 255, 0.5);
+    inset 0 0 0 3px rgba(255, 255, 255, 0.5) !important;
 }
 
 /* 左侧第一层 */
@@ -92,7 +113,7 @@
     translateX(-200px) 
     scale(0.8) 
     rotateY(0deg);          /* 移除倾斜，保持平的 */
-  z-index: 8;
+  z-index: 80 !important;
 }
 
 /* 左侧第二层 */
@@ -103,7 +124,7 @@
     translateX(-380px) 
     scale(0.65) 
     rotateY(0deg);          /* 移除倾斜，保持平的 */
-  z-index: 6;
+  z-index: 60 !important;
 }
 
 /* 右侧第一层 */
@@ -114,7 +135,7 @@
     translateX(200px) 
     scale(0.8) 
     rotateY(0deg);          /* 移除倾斜，保持平的 */
-  z-index: 8;
+  z-index: 80 !important;
 }
 
 /* 右侧第二层 */
@@ -125,7 +146,7 @@
     translateX(380px) 
     scale(0.65) 
     rotateY(0deg);          /* 移除倾斜，保持平的 */
-  z-index: 6;
+  z-index: 60 !important;
 }
 
 /* 左侧第三层 */
@@ -136,7 +157,7 @@
     translateX(-540px) 
     scale(0.5) 
     rotateY(0deg);          /* 移除倾斜，保持平的 */
-  z-index: 4;
+  z-index: 40 !important;
 }
 
 /* 右侧第三层 */
@@ -147,16 +168,30 @@
     translateX(540px) 
     scale(0.5) 
     rotateY(0deg);          /* 移除倾斜，保持平的 */
-  z-index: 4;
+  z-index: 40 !important;
 }
 
 /* 隐藏的卡片 */
 .carousel-card.hidden {
-  opacity: 0;
+  opacity: 0.05;             /* 几乎透明，降低干扰 */
   transform: 
     translateZ(-500px) 
     scale(0.3);
-  z-index: 1;
+  z-index: 1 !important;
+  transition: opacity 0.4s ease, transform 0.4s ease; /* 较慢的过渡效果 */
+  cursor: default;           /* 默认指针，降低点击欲望 */
+  pointer-events: auto;      /* 保持可点击，但视觉上不明显 */
+}
+
+/* 隐藏卡片的悬停效果 - 需要更明确的悬停才显示 */
+.carousel-card.hidden:hover {
+  opacity: 0.25 !important;  /* 悬停时适度显示 */
+  transform: 
+    translateZ(-450px) 
+    scale(0.35) !important;  /* 悬停时轻微放大 */
+  cursor: pointer !important; /* 悬停时才显示指针 */
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* =========================================
@@ -164,9 +199,8 @@
    ========================================= */
 
 .carousel-card:hover {
-  transform: translateY(-10px) scale(1.05) !important;
-  box-shadow: 
-    0 40px 90px rgba(0, 0, 0, 0.6) !important;
+  /* 不再改变 transform，避免覆盖状态类的 translateZ/translateX */
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
 }
 
 .carousel-card:hover .album-cover img {
@@ -174,20 +208,28 @@
 }
 
 .carousel-card.active:hover {
-  transform: 
-    translateZ(50px) 
-    scale(1.05) 
-    rotateY(0deg) !important;
+  transform: translateZ(50px) scale(1.05) rotateY(0deg) !important;
+  box-shadow: 
+    0 45px 100px rgba(0, 0, 0, 0.6),
+    0 30px 70px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 3px rgba(255, 255, 255, 0.55) !important;
 }
 
 /* =========================================
-   导航按钮样式 - 现代化设计
-   ========================================= */
+  导航按钮样式 - 现代化设计
+  定位说明：
+  - 按钮相对 .carousel-container（position: relative）进行绝对定位。
+  - 垂直方向用 top: 50% + transform: translateY(-50%) 精准居中。
+  - 水平方向在 .carousel-btn.prev / .carousel-btn.next 中用 left/right 设置，
+    该距离相对于容器“内边距（padding）内侧”的边界。
+  - 如需更靠里/靠外：优先调整 left/right 数值；或配合调整 .carousel-container 的 padding。
+  - 如果想让按钮更高或更低，可改 top（例如 45%/55%）或在 :hover 时避免改动纵向平移。
+  ========================================= */
 
 .carousel-btn {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 50%;                 /* 将按钮的顶部放到容器高度的 50% 处 */
+  transform: translateY(-50%); /* 再向上平移自身高度的一半，实现精确垂直居中 */
   font-size: 24px;
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid rgba(0, 0, 0, 0.1);
@@ -195,7 +237,7 @@
   width: 70px;
   height: 70px;
   cursor: pointer;
-  z-index: 999;           /* 更高的z-index确保可见 */
+  z-index: 999;             /* 层级高于卡片，确保始终可见且可点 */
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   box-shadow: 
     0 8px 20px rgba(0,0,0,0.3);
@@ -216,9 +258,11 @@
 }
 
 .carousel-btn.prev { 
-  left: 20px;             /* 确保在容器内可见 */
+  /* 将按钮放在左侧隐藏卡片上方区域，使用百分比便于响应式 */
+  left: 10%;
 }
 
 .carousel-btn.next { 
-  right: 20px;            /* 确保在容器内可见 */
+  /* 将按钮放在右侧隐藏卡片上方区域，使用百分比便于响应式 */
+  right: 10%;
 }

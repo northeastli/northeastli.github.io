@@ -54,44 +54,48 @@ function getShortestDistance(from, to, total) {
 }
 
 function updateCarousel(instant = false) {
-  // 更新卡片状态和3D效果
+  console.log(`更新轮播状态: currentCenterCard = ${currentCenterCard}`);
+  // 清理并重新打标记（同步进行，交由CSS控制层级）
   allCards.forEach((card, i) => {
-    // 清除所有状态类
     card.classList.remove('active', 'prev-1', 'prev-2', 'prev-3', 'next-1', 'next-2', 'next-3', 'hidden');
-    
-    // 计算相对于中心的位置
     const relativePosition = i - currentCenterCard;
-    
-    // 应用对应的状态类和3D变换
+
     if (relativePosition === 0) {
-      // 中心卡片
       card.classList.add('active');
+      console.log(`卡片 ${i} 设为中心 (active)`);
     } else if (relativePosition === -1) {
-      // 左侧第一层
       card.classList.add('prev-1');
     } else if (relativePosition === -2) {
-      // 左侧第二层
       card.classList.add('prev-2');
     } else if (relativePosition === -3) {
-      // 左侧第三层
       card.classList.add('prev-3');
     } else if (relativePosition === 1) {
-      // 右侧第一层
       card.classList.add('next-1');
     } else if (relativePosition === 2) {
-      // 右侧第二层
       card.classList.add('next-2');
     } else if (relativePosition === 3) {
-      // 右侧第三层
       card.classList.add('next-3');
     } else {
-      // 完全隐藏的卡片
       card.classList.add('hidden');
     }
   });
   
   // 更新实际当前索引
   realCurrentIndex = (currentCenterCard - 3 + originalCards.length) % originalCards.length;
+  console.log(`实际索引: ${realCurrentIndex}`);
+  
+  // 调试：打印所有卡片的状态
+  setTimeout(() => {
+    console.log('=== 当前卡片状态 ===');
+    allCards.forEach((card, i) => {
+      const classes = Array.from(card.classList).filter(c => 
+        ['active', 'prev-1', 'prev-2', 'prev-3', 'next-1', 'next-2', 'next-3', 'hidden'].includes(c)
+      );
+      const zIndex = window.getComputedStyle(card).zIndex;
+      console.log(`卡片 ${i}: ${classes.join(', ')} (z-index: ${zIndex})`);
+    });
+    console.log('==================');
+  }, 0);
 }
 
 // 自动轮播功能
@@ -150,9 +154,71 @@ nextBtn.addEventListener('click', () => {
   }, 2000);
 });
 
-// 点击功能 - 区分中心卡片和侧边卡片
+// 渐进式移动到目标位置的函数
+function moveToTarget(targetIndex) {
+  console.log(`目标移动: 从 ${currentCenterCard} 到 ${targetIndex}`);
+  
+  if (targetIndex === currentCenterCard) {
+    console.log('已经在目标位置');
+    return; // 已经在目标位置
+  }
+  
+  // 计算最短路径距离
+  const totalCards = allCards.length;
+  let distance = targetIndex - currentCenterCard;
+  
+  // 处理循环边界，选择最短路径
+  if (Math.abs(distance) > Math.abs(distance + totalCards)) {
+    distance = distance + totalCards;
+  }
+  if (Math.abs(distance) > Math.abs(distance - totalCards)) {
+    distance = distance - totalCards;
+  }
+  
+  console.log(`最短距离: ${distance}`);
+  
+  // 确定移动方向
+  const step = distance > 0 ? 1 : -1;
+  let stepsRemaining = Math.abs(distance);
+  
+  // 创建动画序列
+  function animateStep() {
+    if (stepsRemaining > 0) {
+      console.log(`剩余步数: ${stepsRemaining}, 当前位置: ${currentCenterCard}`);
+      
+      // 每步移动一个位置
+      if (step > 0) {
+        nextSlide(); // 向右滚动
+      } else {
+        prevSlide(); // 向左滚动
+      }
+      
+      stepsRemaining--;
+      
+      // 继续下一步
+      if (stepsRemaining > 0) {
+        setTimeout(animateStep, 350); // 每350ms移动一步，稍微慢一点
+      } else {
+        console.log('到达目标位置');
+        // 到达目标位置，强制更新一次确保状态正确
+        setTimeout(() => {
+          updateCarousel();
+          // 2秒后恢复自动轮播
+          setTimeout(() => {
+            if (isAutoPlaying) startAutoPlay();
+          }, 2000);
+        }, 100);
+      }
+    }
+  }
+  
+  // 开始动画
+  animateStep();
+}
+
+// 点击功能 - 智能点击：中心卡片跳转，其他卡片滚动到中心
 allCards.forEach((card, index) => {
-  card.addEventListener('click', () => {
+  card.addEventListener('click', (e) => {
     stopAutoPlay(); // 点击时暂停自动轮播
     
     if (card.classList.contains('active')) {
@@ -161,40 +227,51 @@ allCards.forEach((card, index) => {
       if (link && link !== '#') {
         window.location.href = link;
       }
-    } else if (card.classList.contains('visible')) {
-      // 点击侧边卡片 - 将其移动到中心
-      currentCenterCard = index;
-      updateCarousel();
+    } else {
+      // 只有在明确点击卡片内容时才触发（降低灵敏度）
+      const cardRect = card.getBoundingClientRect();
+      const clickX = e.clientX;
+      const clickY = e.clientY;
       
-      // 2秒后恢复自动轮播
-      setTimeout(() => {
-        if (isAutoPlaying) startAutoPlay();
-      }, 2000);
+      // 检查点击是否在卡片的核心区域内（减少误触）
+      const centerX = cardRect.left + cardRect.width / 2;
+      const centerY = cardRect.top + cardRect.height / 2;
+      const maxDistance = Math.min(cardRect.width, cardRect.height) * 0.4; // 点击范围缩小到40%
+      
+      const distance = Math.sqrt(
+        Math.pow(clickX - centerX, 2) + Math.pow(clickY - centerY, 2)
+      );
+      
+      if (distance <= maxDistance) {
+        // 在核心区域内点击 - 执行滚动到中心
+        console.log(`点击了卡片 ${index}，开始滚动到中心位置`);
+        moveToTarget(index);
+      }
     }
   });
   
-  // 鼠标悬停时暂停自动轮播
+  // 鼠标悬停效果 - 只对可见卡片明显响应
   card.addEventListener('mouseenter', () => {
-    if (card.classList.contains('visible')) {
-      card.style.cursor = 'pointer';
+    // 只暂停自动轮播，不再强制修改样式（让CSS处理）
+    if (!card.classList.contains('active')) {
       stopAutoPlay();
     }
   });
   
-  // 鼠标离开时恢复自动轮播
+  // 鼠标离开时恢复效果
   card.addEventListener('mouseleave', () => {
+    // 恢复自动轮播
     if (isAutoPlaying) {
       startAutoPlay();
     }
   });
   
-  // 双击任何可见卡片都能跳转（备用功能）
+  // 双击任何卡片都能直接跳转（快捷功能）
   card.addEventListener('dblclick', () => {
-    if (card.classList.contains('visible')) {
-      const link = card.dataset.link;
-      if (link && link !== '#') {
-        window.location.href = link;
-      }
+    const link = card.dataset.link;
+    if (link && link !== '#') {
+      console.log(`双击跳转到: ${link}`);
+      window.location.href = link;
     }
   });
 });

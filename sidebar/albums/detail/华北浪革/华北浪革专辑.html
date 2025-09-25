@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>华北浪革 - 专辑详情</title>
+
+  <!-- 引入 CSS -->
+  <link rel="stylesheet" href="../../../../css/album-detail.css">
+  <link rel="stylesheet" href="../../../../css/album-in.css">
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <link rel="stylesheet" href="../../../../css/carousel.css">
+  <link rel="stylesheet" href="../../../../css/player.css">
+  <link rel="stylesheet" href="../../../../css/sidebar.css">
+  <!-- APlayer 样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+
+  <style>
+
+
+    /* 基本布局：左边封面，右边内容 */
+    .album-detail {
+      display: flex; /* 横向排列 */
+      gap: 20px; /* 左右间距 */
+      align-items: flex-start; /* 顶部对齐 */
+    }
+
+    .album-cover {
+      flex: 1; /* 左边占一份 */
+      max-width: 300px;
+      display: flex;
+      flex-direction: column; /* 垂直排列封面和播放器 */
+      gap: 15px; /* 封面和播放器之间的间距 */
+    }
+
+    .album-info {
+      flex: 2; /* 右边占两份 */
+    }
+
+    /* 标签按钮 */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      background: #eee;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .tab:hover {
+      background: #ddd;
+    }
+
+    .tab.active {
+      background: #4285f4;
+      color: white;
+      border-color: #4285f4;
+    }
+
+    /* 内容区域 */
+    .tab-content {
+      display: none; /* 默认隐藏 */
+    }
+
+    .tab-content.active {
+      display: block; /* 只有当前的显示 */
+    }
+
+    /* 歌词高亮样式 */
+    #lyrics-text .highlight {
+      color: #4285f4;
+      font-weight: bold;
+    }
+
+    /* Header居中修复 */
+    header {
+      margin-left: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar" class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../../../../index.htm" target="_self">首页</a></li>
+        <li><a href="../albums.html" class="active">专辑</a></li>
+        <li><a href="../../singles/singles.html">单曲</a></li>
+        <li><a href="../../live/live.html">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 页面头部 -->
+  <header>
+    <h1>华北浪革</h1>
+  </header>
+
+  <!-- 主体内容 -->
+  <main>
+    <div class="album-detail">
+      <!-- 左边：专辑封面和播放器 -->
+      <div class="album-cover">
+        <img src="../../../../img/cover/华北浪革/华北浪革.png" alt="华北浪革" width="100%">
+        
+        <!-- 播放器容器 -->
+        <div id="aplayer-container"></div>
+      </div>
+
+      <!-- 右边：专辑信息 -->
+      <div class="album-info">
+        
+        <!-- 上半部分：简介和歌词 -->
+        <div class="info-section">
+          <!-- 标签按钮 -->
+          <div class="tabs">
+            <div class="tab active" data-target="intro">简介</div>
+            <div class="tab" data-target="lyrics">歌词</div>
+          </div>
+
+          <!-- 标签内容：简介 -->
+          <div id="intro" class="tab-content active">
+            <h2>专辑简介</h2>
+            <div style="color: #333;">
+              <p>我叫刘森，很想写几首喜欢的歌。</p>
+              <p>个人意志的自由与偏执，总在引导我唤起对自我的激情，去精神世界里找找自己的位置。</p>
+              <p>深海里的长夜短歌，是我心底的华北浪革。</p>
+              <br>
+              <p>愿与天共老，与己共情。</p>
+            </div>
+          </div>
+
+          <!-- 标签内容：歌词 -->
+          <div id="lyrics" class="tab-content">
+            <h2>歌词</h2>
+            <div id="lyrics-text">
+              <!-- 歌词将由 JS 动态生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 下半部分：创作者说 -->
+        <div class="live-section-inner">
+          <!-- 创作者说标签按钮 -->
+          <div class="live-tabs">
+            <div class="live-tab active" data-target="creator-info">创作者说</div>
+          </div>
+
+          <!-- 创作者说内容区域 -->
+          <div class="live-content">
+            <!-- 创作者说内容 -->
+            <div id="creator-info" class="live-tab-content active">
+              <div class="video-item">
+                <div id="creator-text">
+                  <p style="line-height: 1.8; color: #333;">
+                    华北浪革专辑创作于华北平原的日常生活中，每一首歌都承载着对故乡、对生活、对理想的深刻思考。
+                  </p>
+                  <p style="margin-top: 15px; line-height: 1.8; color: #333;">
+                    在这片土地上，我用音乐记录下了平凡生活中的不平凡感受，希望能与听众产生共鸣。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2025 华北浪漫革命</p>
+  </footer>
+
+  <!-- APlayer JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  
+  <!-- 引入歌词管理器 -->
+  <script src="../../../../js/lyrics-manager.js"></script>
+  
+  <!-- 引入主脚本 -->
+  <script src="../../../../js/main.js"></script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 全局变量
+  let ap;
+  let isUserSeeking = false;
+  
+  // 初始化歌词管理器
+  const lyricsManager = new LyricsManager({
+    lyricsContainerId: 'lyrics-text'
+  });
+
+  // 专辑数据
+  const albumData = {
+    trackList: [
+      {
+        name: '上游的风',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/上游的风 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/上游的风 - 刘森.lrc'
+      },
+      {
+        name: '悲哀藏在现实中',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/悲哀藏在现实中 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/悲哀藏在现实中 - 刘森.lrc'
+      },
+      {
+        name: '晚灯',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/晚灯 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/晚灯 - 刘森.lrc'
+      },
+      {
+        name: '死如秋叶',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/死如秋叶 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/死如秋叶 - 刘森.lrc'
+      },
+      {
+        name: '深海',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/深海 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/深海 - 刘森.lrc'
+      },
+      {
+        name: '温情',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/温情 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/温情 - 刘森.lrc'
+      },
+      {
+        name: '焰火青年',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/焰火青年 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/焰火青年 - 刘森.lrc'
+      },
+      {
+        name: '爱人穿过你',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/爱人穿过你 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/爱人穿过你 - 刘森.lrc'
+      },
+      {
+        name: '疯土',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/疯土 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/疯土 - 刘森.lrc'
+      },
+      {
+        name: '而我也无法摸到上游的风',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/华北浪革专辑/而我也无法摸到上游的风 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/华北浪革.png',
+        lrc: '../../../../../../audio/华北浪革/华北浪革专辑/而我也无法摸到上游的风 - 刘森.lrc'
+      }
+    ]
+  };
+
+  // 标签切换逻辑
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // 创作者说标签切换逻辑
+  const liveTabs = document.querySelectorAll('.live-tab');
+  const liveContents = document.querySelectorAll('.live-tab-content');
+
+  liveTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      liveTabs.forEach(t => t.classList.remove('active'));
+      liveContents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // 初始化播放器
+  function initializePlayer() {
+    try {
+      console.log('开始初始化播放器...');
+      
+      // 验证音频文件路径
+      albumData.trackList.forEach((track, index) => {
+        console.log(`歌曲 ${index + 1} - ${track.name}:`);
+        console.log(`  音频: ${track.url}`);
+        console.log(`  封面: ${track.cover}`);
+        console.log(`  歌词: ${track.lrc}`);
+      });
+      
+      // 初始化播放器
+      ap = new APlayer({
+        container: document.getElementById('aplayer-container'),
+        fixed: false,
+        autoplay: false,
+        theme: '#FADFA3',
+        loop: 'all',
+        listFolded: false, // 展开播放列表
+        audio: albumData.trackList
+      });
+
+      // 绑定播放器事件
+      bindPlayerEvents();
+      
+      // 绑定歌词管理器到播放器
+      lyricsManager.bindPlayer(ap);
+      
+      console.log('播放器初始化成功');
+      
+    } catch (error) {
+      console.error('播放器初始化失败:', error);
+    }
+  }
+
+  // 绑定播放器事件的函数
+  function bindPlayerEvents() {
+    // 等待 APlayer 加载完成后绑定事件
+    ap.on('canplay', () => {
+      console.log('APlayer 准备完成，可以播放了');
+      console.log('音频时长:', ap.audio.duration, '秒');
+      console.log('音频源:', ap.audio.src);
+    });
+
+    // 监听加载错误
+    ap.on('error', (e) => {
+      console.error('APlayer 加载失败:', e);
+      console.error('错误详情:', e.target ? e.target : '无详细信息');
+    });
+
+    // 监听音频加载错误
+    ap.audio.addEventListener('error', (e) => {
+      console.error('音频文件加载失败:', e);
+      console.error('当前音频源:', ap.audio.src);
+      console.error('音频错误代码:', ap.audio.error ? ap.audio.error.code : '未知');
+      console.error('音频错误信息:', ap.audio.error ? ap.audio.error.message : '无信息');
+    });
+
+    // 监听音频加载开始
+    ap.audio.addEventListener('loadstart', () => {
+      console.log('开始加载音频:', ap.audio.src);
+    });
+
+    // 监听音频元数据加载完成
+    ap.audio.addEventListener('loadedmetadata', () => {
+      console.log('音频元数据加载完成');
+      console.log('音频时长:', ap.audio.duration);
+      console.log('音频格式支持:', ap.audio.canPlayType('audio/flac'));
+    });
+
+    // 监听歌曲切换事件，加载对应歌词
+    ap.on('listswitch', (index) => {
+      console.log('切换到歌曲:', index.index);
+      const currentAudio = ap.list.audios[index.index];
+      
+      if (currentAudio.lrc) {
+        lyricsManager.loadLyrics(currentAudio.lrc);
+      }
+    });
+
+    // 同步高亮和自动滚动
+    ap.on('timeupdate', () => {
+      // 拖动进度条时不自动滚动歌词
+      if (!isUserSeeking) {
+        lyricsManager.syncLyrics();
+      }
+    });
+
+    // 监听用户开始拖拽进度条
+    ap.on('seeking', () => {
+      isUserSeeking = true;
+    });
+
+    // 监听用户结束拖拽进度条
+    ap.on('seeked', () => {
+      isUserSeeking = false;
+    });
+
+    // 初始加载第一首歌的歌词
+    setTimeout(() => {
+      if (ap.list.audios[0]) {
+        if (ap.list.audios[0].lrc) {
+          lyricsManager.loadLyrics(ap.list.audios[0].lrc);
+        }
+      }
+    }, 1000);
+  }
+
+  // 启动播放器初始化
+  initializePlayer();
+});
+  </script>
+</body>
+</html>

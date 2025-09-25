@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>小歌集 - 专辑详情</title>
+
+  <!-- 引入 CSS -->
+  <link rel="stylesheet" href="../../../../css/album-detail.css">
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <link rel="stylesheet" href="../../../../css/player.css">
+  <link rel="stylesheet" href="../../../../css/sidebar.css">
+  <link rel="stylesheet" href="../../../../css/album-in.css">
+
+  <!-- APlayer 样式 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+
+  <style>
+    /* 动态背景切换功能 */
+    body {
+      transition: background-image 1s ease-in-out;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    /* 背景遮罩层，确保内容可读性 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.1); /* 默认遮罩颜色 */    
+      z-index: -1;
+      transition: background 1s ease-in-out; /* 平滑过渡效果 */
+    }
+
+    /* 当有背景图片时，增加遮罩透明度 */
+    body.has-background::before {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar" class="sidebar">
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="../../../about/about.html">关于</a></li>
+        <li><a href="../albums.html" class="active">专辑</a></li>
+        <li><a href="../../singles/singles.html">单曲</a></li>
+        <li><a href="../../live/live.html">现场</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 页面头部 -->
+  <header>
+    <h1>小歌集</h1>
+  </header>
+
+  <!-- 主体内容 -->
+  <main>
+    <div class="album-detail">
+      <!-- 左边：专辑封面和播放器 -->
+      <div class="album-cover">
+        <img src="../../../../img/cover/华北浪革/小歌集.png" alt="小歌集" width="100%">
+        
+        <!-- 播放器容器 -->
+        <div id="aplayer-container"></div>
+      </div>
+
+      <!-- 右边：专辑信息 -->
+      <div class="album-info">
+        
+        <!-- 上半部分：简介和歌词 -->
+        <div class="info-section">
+          <!-- 标签按钮 -->
+          <div class="tabs">
+            <div class="tab active" data-target="intro">简介</div>
+            <div class="tab" data-target="lyrics">歌词</div>
+          </div>
+
+          <!-- 标签内容：简介 -->
+          <div id="intro" class="tab-content active">
+            <h2>专辑简介</h2>
+            <div style=" color: #333;">
+              <p >2014-2020年间三首对我个人意义比较重要的小歌。</p>
+              <p >感谢遇到诗人北岛的诗歌《雨夜》，音乐人肖容的歌曲《我说我不来》，科恩兄弟的电影《老无所依》。</p>
+              <p >难忘当年那些时光和感受。</p>
+              <br>
+              <p >再次感谢封面绘画——艺术家黄晓亮。</p>
+            </div>
+          </div>
+
+          <!-- 标签内容：歌词 -->
+          <div id="lyrics" class="tab-content">
+            <h2>歌词</h2>
+            <div id="lyrics-text">
+              <!-- 歌词将由 JS 动态生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 下半部分：创作者说 -->
+        <div class="live-section-inner">
+          <!-- 创作者说标签按钮 -->
+          <div class="live-tabs">
+            <div class="live-tab active" data-target="creator-info">创作者说</div>
+          </div>
+
+          <!-- 创作者说内容区域 -->
+          <div class="live-content">
+            <!-- 创作者说内容 -->
+            <div id="creator-info" class="live-tab-content active">
+              <div class="video-item">
+                <div id="creator-text">
+                  <p style="line-height: 1.8; color: #333;">
+                    《小歌集》记录了我创作初期的一些思考和感受。虽然只有三首歌，但每一首都很珍贵。
+                  </p>
+                  <p style="margin-top: 15px; line-height: 1.8; color: #333;">
+                    《我说我不来》表达的是内心的矛盾，《雨夜》描绘的是诗意的心境，《野蛮不眠》则是深夜的沉思。希望这些小小的歌能带给大家一些共鸣。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer>
+    <p>© 2025 华北浪漫革命</p>
+  </footer>
+
+  <!-- APlayer JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  
+  <!-- 引入歌词管理器 -->
+  <script src="../../../../js/lyrics-manager.js"></script>
+  
+  <!-- 引入主脚本 -->
+  <script src="../../../../js/main.js"></script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 全局变量
+  let ap;
+  let isUserSeeking = false;
+  
+  // 初始化歌词管理器
+  const lyricsManager = new LyricsManager({
+    lyricsContainerId: 'lyrics-text',
+    highlightClass: 'highlight'
+  });
+
+  // 专辑数据
+  const albumData = {
+    trackList: [
+      {
+        name: '我说我不来',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/小歌集/我说我不来 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/小歌集.png',
+        lrc: '../../../../../../audio/华北浪革/小歌集/我说我不来 - 刘森.lrc'
+      },
+      {
+        name: '雨夜',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/小歌集/雨夜 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/小歌集.png',
+        lrc: '../../../../../../audio/华北浪革/小歌集/雨夜 - 刘森.lrc'
+      },
+      {
+        name: '野蛮不眠',
+        artist: '刘森',
+        url: '../../../../../../audio/华北浪革/小歌集/野蛮不眠 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/小歌集.png',
+        lrc: '../../../../../../audio/华北浪革/小歌集/野蛮不眠 - 刘森.lrc'
+      }
+    ]
+  };
+
+  // 标签切换逻辑
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // 创作者说标签切换逻辑
+  const liveTabs = document.querySelectorAll('.live-tab');
+  const liveContents = document.querySelectorAll('.live-tab-content');
+
+  liveTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      liveTabs.forEach(t => t.classList.remove('active'));
+      liveContents.forEach(c => c.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
+
+  // 初始化播放器
+  function initializePlayer() {
+    try {
+      console.log('开始初始化播放器...');
+      
+      // 验证音频文件路径
+      albumData.trackList.forEach((track, index) => {
+        console.log(`歌曲 ${index + 1} - ${track.name}:`);
+        console.log(`  音频: ${track.url}`);
+        console.log(`  封面: ${track.cover}`);
+        console.log(`  歌词: ${track.lrc}`);
+      });
+      
+      // 初始化播放器
+      ap = new APlayer({
+        container: document.getElementById('aplayer-container'),
+        fixed: false,
+        autoplay: false,
+        theme: '#FADFA3',
+        loop: 'all',
+        listFolded: false, // 展开播放列表
+        audio: albumData.trackList
+      });
+
+      // 绑定播放器事件
+      bindPlayerEvents();
+      
+      // 绑定歌词管理器到播放器
+      lyricsManager.bindPlayer(ap);
+      
+      console.log('播放器初始化成功');
+      
+    } catch (error) {
+      console.error('播放器初始化失败:', error);
+    }
+  }
+
+  // 绑定播放器事件的函数
+  function bindPlayerEvents() {
+    // 等待 APlayer 加载完成后绑定事件
+    ap.on('canplay', () => {
+      console.log('APlayer 准备完成，可以播放了');
+      console.log('音频时长:', ap.audio.duration, '秒');
+      console.log('音频源:', ap.audio.src);
+    });
+
+    // 监听加载错误
+    ap.on('error', (e) => {
+      console.error('APlayer 加载失败:', e);
+      console.error('错误详情:', e.target ? e.target : '无详细信息');
+    });
+
+    // 监听音频加载错误
+    ap.audio.addEventListener('error', (e) => {
+      console.error('音频文件加载失败:', e);
+      console.error('当前音频源:', ap.audio.src);
+      console.error('音频错误代码:', ap.audio.error ? ap.audio.error.code : '未知');
+      console.error('音频错误信息:', ap.audio.error ? ap.audio.error.message : '无信息');
+    });
+
+    // 监听音频加载开始
+    ap.audio.addEventListener('loadstart', () => {
+      console.log('开始加载音频:', ap.audio.src);
+    });
+
+    // 监听音频元数据加载完成
+    ap.audio.addEventListener('loadedmetadata', () => {
+      console.log('音频元数据加载完成');
+      console.log('音频时长:', ap.audio.duration);
+      console.log('音频格式支持:', ap.audio.canPlayType('audio/flac'));
+    });
+
+    // 监听歌曲切换事件，加载对应歌词
+    ap.on('listswitch', (index) => {
+      console.log('切换到歌曲:', index.index);
+      const currentAudio = ap.list.audios[index.index];
+      
+      if (currentAudio.lrc) {
+        lyricsManager.loadLyrics(currentAudio.lrc);
+      }
+    });
+
+    // 同步高亮和自动滚动
+    ap.on('timeupdate', () => {
+      // 拖动进度条时不自动滚动歌词
+      if (!isUserSeeking) {
+        lyricsManager.syncLyrics();
+      }
+    });
+
+    // 监听用户开始拖拽进度条
+    ap.on('seeking', () => {
+      isUserSeeking = true;
+    });
+
+    // 监听用户结束拖拽进度条
+    ap.on('seeked', () => {
+      isUserSeeking = false;
+    });
+
+    // 初始加载第一首歌的歌词
+    setTimeout(() => {
+      if (ap.list.audios[0]) {
+        if (ap.list.audios[0].lrc) {
+          lyricsManager.loadLyrics(ap.list.audios[0].lrc);
+        }
+      }
+    }, 1000);
+  }
+
+  // 启动播放器初始化
+  initializePlayer();
+});
+  </script>
+</body>
+</html>

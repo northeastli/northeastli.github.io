@@ -12,14 +12,10 @@ body {
 header, footer {
   text-align: center;          /* 居中显示文字 */
   padding: 20px;               /* 内边距 */
-  background-color: #e2dfdf;      /* 背景颜色 */
+  background-color: #e2dfdf;   /* 背景颜色 */
+  margin-left: 60px;           /* 左边距，和主内容区一致 */
 }
 
-/* 
- * 注意：页面中有两个 header 元素：
- * 1. 第一个 header - 包含"华北浪漫革命"标题（普通header，会受侧边栏影响）
- * 2. 第二个 header.hero - 包含"刘森"和描述文字（特殊header，不受侧边栏影响）
- */
 
 /* ============================
    主内容区样式

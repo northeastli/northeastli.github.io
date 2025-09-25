@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8">   
   <title>永隔一江水 - 专辑详情</title>
 
   <!-- 引入 CSS -->
   <link rel="stylesheet" href="../../../../css/album-detail.css">
+  <link rel="stylesheet" href="../../../../css/album-in.css">
   <link rel="stylesheet" href="../../../../css/style.css">
   <link rel="stylesheet" href="../../../../css/carousel.css">
   <link rel="stylesheet" href="../../../../css/player.css">
+  <link rel="stylesheet" href="../../../../css/sidebar.css">
   <!-- APlayer 样式 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 
@@ -78,10 +80,9 @@
 
   <!-- 侧边栏 -->
   <div id="sidebar" class="sidebar">
-    <button id="sidebar-toggle" class="sidebar-toggle">&#x25B6;</button>
     <nav class="sidebar-nav">
       <ul>
-        <li><a href="../../../about/about.html">关于</a></li>
+        <li><a href="../../../../index.htm" target="_self">首页</a></li>
         <li><a href="../../albums.html" class="active">专辑</a></li>
         <li><a href="../../../singles/singles.html">单曲</a></li>
         <li><a href="../../../live/live.html">现场</a></li>
@@ -100,7 +101,7 @@
 
       <!-- 左边：专辑封面和播放器 -->
       <div class="album-cover">
-        <img src="../../../albums/cover/永隔一江水.jpg" alt="永隔一江水" width="100%">
+        <img src="../../../../img/cover/华北浪革/永隔一江水.jpg" alt="永隔一江水" width="100%">
         
         <!-- 播放器容器 -->
         <div id="aplayer-container"></div>
@@ -116,8 +117,7 @@
 
         <!-- 标签内容：简介 -->
         <div id="intro" class="tab-content active">
-          <h2>专辑简介</h2>
-          <p>这是一张关于渡的专辑的简介，可以写一些背景故事、创作灵感等。</p>
+        <p>2019-10-12</p>
         </div>
 
         <!-- 标签内容：歌词 -->
@@ -197,9 +197,9 @@ document.addEventListener('DOMContentLoaded', function () {
     audio: [
       {
         name: '永隔一江水',
-        artist: '华北浪漫革命',
-        url: '../../../../../../../audio/华北浪革/永隔一江水 (Single Version) - 刘森.flac',
-        cover: '../../../albums/cover/永隔一江水.jpg'
+        artist: '刘森',
+        url: '../../../../audio/华北浪革/永隔一江水 - 刘森.flac',
+        cover: '../../../../img/cover/华北浪革/永隔一江水.jpg'
       }
     ]
   });
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ---------- 加载 LRC 文件 ----------
-  fetch('../../../../../../../audio/华北浪革/永隔一江水 (Single Version) - 刘森.lrc')
+  fetch('../../../../../../audio/华北浪革/永隔一江水 - 刘森.lrc')
     .then(res => res.text())
     .then(lrcText => {
       const lyricsData = parseLRC(lrcText);

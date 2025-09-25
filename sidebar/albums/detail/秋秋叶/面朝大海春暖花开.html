@@ -4,76 +4,15 @@
   <meta charset="UTF-8">
   <title>面朝大海春暖花开 - 专辑详情</title>
 
-  <!-- 引入 CSS -->
-  <link rel="stylesheet" href="../../.      <ul>
-        <li><a href="../../../index.htm" target="_self">首页</a></li>
-        <li><a href="../albums.html" class="active">专辑</a></li>
-        <li><a href="../../singles/singles.html">单曲</a></li>
-        <li><a href="../../live/live.html">现场</a></li>
-      </ul>ss/album-detail.css">
-  <link rel="stylesheet" href="../../../../css/album-in.css">
+ <!-- 引入 CSS -->
+  <link rel="stylesheet" href="../../../../css/album-detail.css">
   <link rel="stylesheet" href="../../../../css/style.css">
-  <link rel="stylesheet" href="../../../../css/carousel.css">
   <link rel="stylesheet" href="../../../../css/player.css">
   <link rel="stylesheet" href="../../../../css/sidebar.css">
+  <link rel="stylesheet" href="../../../../css/album-in.css">
   <!-- APlayer 样式 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 
-  <style>
-    /* 基本布局：左边封面，右边内容 */
-    .album-detail {
-      display: flex; /* 横向排列 */
-      gap: 20px; /* 左右间距 */
-      align-items: flex-start; /* 顶部对齐 */
-    }
-
-    .album-cover {
-      flex: 1; /* 左边占一份 */
-      max-width: 300px;
-      display: flex;
-      flex-direction: column; /* 垂直排列封面和播放器 */
-      gap: 15px; /* 封面和播放器之间的间距 */
-    }
-
-    .album-info {
-      flex: 2; /* 右边占两份 */
-    }
-
-    /* 标签按钮 */
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .tab {
-      padding: 8px 16px;
-      background: #eee;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .tab:hover {
-      background: #ddd;
-    }
-
-    .tab.active {
-      background: #4285f4;
-      color: white;
-      border-color: #4285f4;
-    }
-
-    /* 内容区域 */
-    .tab-content {
-      display: none; /* 默认隐藏 */
-    }
-
-    .tab-content.active {
-      display: block; /* 只有当前的显示 */
-    }
-  </style>
 </head>
 <body>
 
@@ -166,13 +105,14 @@
   </script>
 
 
+ <!-- 侧边栏 -->
   <div id="sidebar" class="sidebar">
     <nav class="sidebar-nav">
       <ul>
-        <li><a href="../about/about.html">关于</a></li>
-        <li><a href="albums.html" class="active">专辑</a></li>
-        <li><a href="../singles/singles.html">单曲</a></li>
-        <li><a href="../live/live.html">现场</a></li>
+        <li><a href="../../../../index.htm" target="_self">首页</a></li>
+        <li><a href="../../albums.html" class="active">专辑</a></li>
+        <li><a href="../../../singles/singles.html">单曲</a></li>
+        <li><a href="../../../live/live.html">现场</a></li>
       </ul>
     </nav>
   </div>

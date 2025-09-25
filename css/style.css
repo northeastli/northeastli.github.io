@@ -28,28 +28,6 @@ main {
   padding: 20px;                /* 内边距 */
 }
 
-/* 当侧边栏展开时，主内容整体右移 */
-/* 
- * CSS 选择器详细解释：
- * 1. body.sidebar-open - 选择同时具有 body 标签和 sidebar-open 类的元素
- * 2. header:not(.hero) - 选择所有 header 元素，但排除具有 .hero 类的 header
- * 3. main - 选择所有 main 元素
- * 
- * 整体含义：当 body 元素具有 sidebar-open 类时：
- * - 所有普通的 header 元素（不包括 .hero 类的 header）向右移动 200px
- * - 所有 main 元素向右移动 200px
- * - .hero 类的 header 不受影响，保持原位置
- */
-/* body.sidebar-open header:not(.hero),     */
-/* 侧边栏展开时：普通header元素右移 */
-/* body.sidebar-open main {               */
-    /* 侧边栏展开时：main元素右移 */
-  /* margin-left: 200px;                   */
-   /* 左边距 = 展开后侧边栏宽度 */
-/* } */
-
-
-
 
     /* ==========================================
        选项卡导航容器

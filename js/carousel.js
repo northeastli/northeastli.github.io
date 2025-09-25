@@ -2,6 +2,33 @@ const track = document.querySelector('.carousel-track');
 const originalCards = Array.from(track.children);
 const prevBtn = document.querySelector('.carousel-btn.prev');
 const nextBtn = document.querySelector('.carousel-btn.next');
+const container = document.querySelector('.carousel-container');
+const TRANSITION_MS = 500; // 与 .carousel-card 的 CSS 过渡时间保持一致
+let actionSeq = 0; // 动作序列号，用于防竞态
+let isAnimating = false; // 是否正在执行单步动画
+let stepQueue = 0;       // 动作队列：>0 表示向右，<0 表示向左
+
+function processQueue() {
+  if (isAnimating || stepQueue === 0) return;
+  const dir = stepQueue > 0 ? 1 : -1;
+  isAnimating = true;
+  if (dir > 0) {
+    nextSlide();
+  } else {
+    prevSlide();
+  }
+  // 在过渡结束后再处理下一步，给无缝跳转保留一点余量
+  setTimeout(() => {
+    isAnimating = false;
+    stepQueue -= dir;
+    processQueue();
+  }, TRANSITION_MS + 30);
+}
+
+function enqueueStep(dir) {
+  stepQueue += dir; // dir: 1 为 next，-1 为 prev
+  processQueue();
+}
 
 // 创建无缝循环的卡片数组
 function createInfiniteLoop() {
@@ -55,6 +82,11 @@ function getShortestDistance(from, to, total) {
 
 function updateCarousel(instant = false) {
   console.log(`更新轮播状态: currentCenterCard = ${currentCenterCard}`);
+  // 如需瞬时更新，则先禁用过渡动画
+  if (instant) {
+    allCards.forEach(card => card.classList.add('no-anim'));
+  }
+
   // 清理并重新打标记（同步进行，交由CSS控制层级）
   allCards.forEach((card, i) => {
     card.classList.remove('active', 'prev-1', 'prev-2', 'prev-3', 'next-1', 'next-2', 'next-3', 'hidden');
@@ -95,6 +127,10 @@ function updateCarousel(instant = false) {
       console.log(`卡片 ${i}: ${classes.join(', ')} (z-index: ${zIndex})`);
     });
     console.log('==================');
+    // 解除瞬时更新的禁用动画
+    if (instant) {
+      allCards.forEach(card => card.classList.remove('no-anim'));
+    }
   }, 0);
 }
 
@@ -103,7 +139,7 @@ function startAutoPlay() {
   if (autoPlayInterval) clearInterval(autoPlayInterval);
   autoPlayInterval = setInterval(() => {
     if (isAutoPlaying) {
-      nextSlide();
+      enqueueStep(1);
     }
   }, AUTO_PLAY_SPEED);
 }
@@ -117,30 +153,45 @@ function stopAutoPlay() {
 
 function nextSlide() {
   currentCenterCard++;
-  
-  // 如果到达克隆区域的边界，循环回去
-  if (currentCenterCard >= allCards.length - 2) {
-    currentCenterCard = 3; // 跳回真实卡片的开始
+  updateCarousel(false);
+  // 如果到达末尾的首个克隆中心（index = allCards.length - 3），先播放这一步动画
+  // 动画结束后瞬时跳回真实起点中心（index = 3），达到无缝衔接
+  if (currentCenterCard === allCards.length - 3) {
+    const mySeq = ++actionSeq;
+    setTimeout(() => {
+      // 仅当期间没有新的动作发生，且仍然停留在克隆边界时，才执行无缝跳转
+      if (actionSeq === mySeq && currentCenterCard === allCards.length - 3) {
+        currentCenterCard = 3;
+        updateCarousel(true);
+      }
+    }, TRANSITION_MS);
+  } else {
+    actionSeq++; // 普通步进也推进序列，避免旧的 wrap 回调生效
   }
-  
-  updateCarousel();
 }
 
 function prevSlide() {
   currentCenterCard--;
-  
-  // 如果到达克隆区域的边界，循环回去  
-  if (currentCenterCard < 3) {
-    currentCenterCard = allCards.length - 3; // 跳到真实卡片的末尾
+  updateCarousel(false);
+  // 如果到达起点前的最后一个克隆中心（index = 2），先播放这一步动画
+  // 动画结束后瞬时跳回真实末尾中心（index = allCards.length - 4）
+  if (currentCenterCard === 2) {
+    const mySeq = ++actionSeq;
+    setTimeout(() => {
+      if (actionSeq === mySeq && currentCenterCard === 2) {
+        currentCenterCard = allCards.length - 4;
+        updateCarousel(true);
+      }
+    }, TRANSITION_MS);
+  } else {
+    actionSeq++;
   }
-  
-  updateCarousel();
 }
 
 // 按钮点击事件 - 轮盘效果，循环移动
 prevBtn.addEventListener('click', () => {
   stopAutoPlay(); // 暂停自动轮播
-  prevSlide();
+  enqueueStep(-1);
   setTimeout(() => {
     if (isAutoPlaying) startAutoPlay(); // 2秒后恢复自动轮播
   }, 2000);
@@ -148,7 +199,7 @@ prevBtn.addEventListener('click', () => {
 
 nextBtn.addEventListener('click', () => {
   stopAutoPlay(); // 暂停自动轮播
-  nextSlide();
+  enqueueStep(1);
   setTimeout(() => {
     if (isAutoPlaying) startAutoPlay(); // 2秒后恢复自动轮播
   }, 2000);
@@ -157,63 +208,18 @@ nextBtn.addEventListener('click', () => {
 // 渐进式移动到目标位置的函数
 function moveToTarget(targetIndex) {
   console.log(`目标移动: 从 ${currentCenterCard} 到 ${targetIndex}`);
-  
-  if (targetIndex === currentCenterCard) {
-    console.log('已经在目标位置');
-    return; // 已经在目标位置
-  }
-  
-  // 计算最短路径距离
-  const totalCards = allCards.length;
-  let distance = targetIndex - currentCenterCard;
-  
-  // 处理循环边界，选择最短路径
-  if (Math.abs(distance) > Math.abs(distance + totalCards)) {
-    distance = distance + totalCards;
-  }
-  if (Math.abs(distance) > Math.abs(distance - totalCards)) {
-    distance = distance - totalCards;
-  }
-  
-  console.log(`最短距离: ${distance}`);
-  
-  // 确定移动方向
-  const step = distance > 0 ? 1 : -1;
-  let stepsRemaining = Math.abs(distance);
-  
-  // 创建动画序列
-  function animateStep() {
-    if (stepsRemaining > 0) {
-      console.log(`剩余步数: ${stepsRemaining}, 当前位置: ${currentCenterCard}`);
-      
-      // 每步移动一个位置
-      if (step > 0) {
-        nextSlide(); // 向右滚动
-      } else {
-        prevSlide(); // 向左滚动
-      }
-      
-      stepsRemaining--;
-      
-      // 继续下一步
-      if (stepsRemaining > 0) {
-        setTimeout(animateStep, 350); // 每350ms移动一步，稍微慢一点
-      } else {
-        console.log('到达目标位置');
-        // 到达目标位置，强制更新一次确保状态正确
-        setTimeout(() => {
-          updateCarousel();
-          // 2秒后恢复自动轮播
-          setTimeout(() => {
-            if (isAutoPlaying) startAutoPlay();
-          }, 2000);
-        }, 100);
-      }
-    }
-  }
-  
-  // 开始动画
-  animateStep();
+  if (targetIndex === currentCenterCard) return;
+  // 以最短路径为准（循环环形）
+  const total = allCards.length;
+  const distance = getShortestDistance(currentCenterCard, targetIndex, total);
+  const dir = distance > 0 ? 1 : -1;
+  const steps = Math.abs(distance);
+  stopAutoPlay();
+  stepQueue += dir * steps; // 入队所有步数
+  processQueue();
+  setTimeout(() => {
+    if (isAutoPlaying) startAutoPlay();
+  }, 2000);
 }
 
 // 点击功能 - 智能点击：中心卡片跳转，其他卡片滚动到中心
@@ -275,6 +281,37 @@ allCards.forEach((card, index) => {
     }
   });
 });
+
+// 捕获阶段的容器点击：当按钮覆盖在卡片上方时，优先判定是否点击了某个非激活卡片的“核心区域”
+// 这样可以让“点击侧边/隐藏卡片滚动到中间”的能力不被按钮遮挡
+if (container) {
+  container.addEventListener('click', (e) => {
+    // 仅在事件目标不是激活卡片本身，且不是直接点击到卡片监听已处理的情况下介入
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+
+    for (let i = 0; i < allCards.length; i++) {
+      const card = allCards[i];
+      if (card.classList.contains('active')) continue; // 不抢占中心卡片点击（保持原跳转）
+
+      const rect = card.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const maxDistance = Math.min(rect.width, rect.height) * 0.4; // 与卡片点击判断保持一致
+      const distance = Math.hypot(clickX - centerX, clickY - centerY);
+
+      if (distance <= maxDistance) {
+        // 命中某张非激活卡片的核心区域——优先执行滚动到中间
+        stopAutoPlay();
+        moveToTarget(i);
+        // 阻止后续的按钮 click 处理，避免只滚动一步
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        return;
+      }
+    }
+  }, true); // 使用捕获阶段，优先于按钮的冒泡监听
+}
 
 // 键盘导航
 document.addEventListener('keydown', (e) => {

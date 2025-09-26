@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/carousel.css">
   <link rel="stylesheet" href="css/player.css">
   <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/intro.css">
   <!-- 在 <head> 中引入远程字体 CSS -->
   <link rel="stylesheet" href="https://chinese-fonts-cdn.deno.dev/packages/jhlst/dist/%E4%BA%AC%E8%8F%AF%E8%80%81%E5%AE%8B%E4%BD%93v2_002/result.css" />
 
@@ -17,6 +18,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 </head>
 <body> 
+
+  <!-- 深海引导覆盖层 -->
+  <div id="intro-overlay" aria-hidden="false">
+    <canvas id="intro-canvas"></canvas>
+    <div class="intro-corners" aria-hidden="true">
+      <span class="corner-char tl">华</span>
+      <span class="corner-char tr">北</span>
+      <span class="corner-char bl">浪</span>
+      <span class="corner-char br">革</span>
+    </div>
+    <div class="intro-content">
+      <div class="vinyl-wrap">
+        <div id="intro-vinyl" class="vinyl" aria-hidden="true">
+          <div class="label" aria-label="专辑封面"></div>
+        </div>
+      </div>
+      <div class="intro-controls" role="group" aria-label="播放控制">
+        <button id="intro-play-btn" class="ctrl-btn play" aria-label="播放">▶</button>
+        <button id="intro-pause-btn" class="ctrl-btn pause" aria-label="暂停" disabled>⏸</button>
+      </div>
+      <button id="intro-enter-btn" class="intro-btn" aria-label="进入网站" hidden>进入网站</button>
+    </div>
+  </div>
 
 
   <!-- 侧边栏 -->
@@ -148,6 +172,7 @@
   <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
 
   <!-- JS 模块 -->
+  <script src="js/intro.js"></script>
   <script src="js/carousel.js"></script> <!-- 轮播图展示-->
   <script src="js/player.js"></script><!--负责 APlayer 播放器初始化和设置-->
   <script src="js/main.js"></script> <!--负责全局页面逻辑或通用功能  页面加载动画菜单或导航栏交互其他不属于轮播或播放器的 JS 功能-->

@@ -1,0 +1,228 @@
+/* 深海引导层样式 */
+:root {
+  --sea-bg: #0B3471; /* 主色调 */
+  --sea-bg-deep: #072447;
+  --sea-accent: #5db2ff;
+  --text-light: rgba(255,255,255,0.9);
+  --text-dim: rgba(255,255,255,0.7);
+}
+
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(120% 120% at 50% 20%, var(--sea-accent) 0%, var(--sea-bg) 35%, var(--sea-bg-deep) 100%);
+  z-index: 1000; /* 高于一切 */
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 700ms ease;
+}
+
+#intro-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#intro-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: blur(0.3px) saturate(1.05);
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--text-light);
+  font-family: 'JingHuaOldSongTi', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  padding: 2rem;
+}
+
+/* 角落文字：华 北 浪 革 依次出现 */
+.intro-corners { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.corner-char {
+  position: absolute;
+  /* 凹陷（雕刻）效果：去色彩、用高光/阴影模拟内凹 */
+  color: transparent; /* 文字本身无颜色，仅靠描边与阴影显形 */
+  -webkit-text-fill-color: transparent; /* 强制 WebKit 内核透明填充，避免默认黑色 */
+  -webkit-text-stroke: 1px rgba(0,0,0,0.28); /* 深一点的暗描边，增强内凹边界 */
+  /* 通过更强的上左暗影 + 极弱的下右高光，营造“刻进背景”的质感 */
+  text-shadow:
+    -2px -2px 3px rgba(0, 0, 0, 0.42),  /* 上左内壁阴影（主）*/
+    -1px -1px 0 rgba(0, 0, 0, 0.28),    /* 上左锐边阴影（次）*/
+    1px 1px 1px rgba(93, 178, 255, 0.08); /* 下右极弱高光（避免白感，用海色系）*/
+
+  /* 字号在这里调节：clamp(最小, 首选vw, 最大) → 非常大 */
+  font-size: clamp(56px, 14vw, 280px);
+  font-weight: 900; /* 加粗 */
+  /* 字体在这里调节：可替换为你的艺术字体 */
+  font-family: 'JingHuaOldSongTi', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  transform: translateY(6px);
+}
+.corner-char.tl { top: 24px; left: 24px; }
+.corner-char.tr { top: 24px; right: 24px; }
+.corner-char.bl { bottom: 24px; left: 24px; }
+.corner-char.br { bottom: 24px; right: 24px; }
+
+/* 仅在播放开始（JS 添加 .corners-visible）后再触发依次入场动画 */
+#intro-overlay.corners-visible .corner-char { animation: corner-in 900ms ease forwards; }
+#intro-overlay.corners-visible .corner-char.tr { animation-delay: 250ms; }
+#intro-overlay.corners-visible .corner-char.bl { animation-delay: 500ms; }
+#intro-overlay.corners-visible .corner-char.br { animation-delay: 750ms; }
+
+@keyframes corner-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.vinyl-wrap {
+  display: grid;
+  place-items: center;
+  margin: 0 auto 1.25rem;
+}
+
+.vinyl {
+  /* ==== 大小设置 ==== */
+  /* min(36vw, 220px) → 在大屏时取屏幕宽度 36%，小屏时最大 220px */
+  width: min(36vw, 220px);
+  height: min(36vw, 220px);
+  border-radius: 50%; /* 圆形唱片 */
+
+  /* ==== 背景层叠，模拟黑胶质感 ==== */
+  background:
+    /* 1. 斜向镜面高光（左上 → 右下） */
+    /*   - 参数调整：
+         - 第一个透明度 0.22 → 越大越亮
+         - 渐变位置 12%、25%、40% → 控制亮带宽度和过渡 */
+    linear-gradient(135deg,
+      rgba(255,255,255,0.22) 12%,
+      rgba(255,255,255,0.10) 25%,
+      rgba(255,255,255,0.00) 40%,
+      rgba(255,255,255,0.08) 65%,
+      rgba(255,255,255,0.18) 85%
+    ),
+
+    /* 2. 环向微光（唱片边缘轻微闪光） */
+    /*   - from 200deg → 起始角度（可以调整旋转反光方向）
+         - rgba(255,255,255,0.07) → 透明度（数值越大越亮）
+         - 0/30/60/100% → 控制环向分布 */
+    /* conic-gradient(from 200deg at 50% 50%,
+      rgba(255,255,255,0.0) 0%, rgba(255,255,255,0) 30%,
+      rgba(255,255,255,0.0) 60%, rgba(255,255,255,0) 100%
+    ), */
+
+    /* 3. 中央柔和高光（提升中心亮度） */
+    radial-gradient(circle at 48% 42%,
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0) 42%
+    ),
+
+    /* 4. 唱片纹理（repeating-radial-gradient 模拟同心圆） */
+    /*   - 0 1px → 亮线的宽度
+         - 1px 2.5px → 每个纹理的间距
+         - rgba 透明度控制纹理亮度 */
+    repeating-radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0.04) 0 1px,
+      rgba(255,255,255,0) 1px 2.5px
+    ),
+
+    /* 5. 深黑基底 */
+    radial-gradient(circle at 50% 50%,
+      #000 0%,
+      #000 70%,
+      #050505 100%
+    );
+
+
+
+  /* ==== 背景融合模式 ==== */
+  /* 顺序对应上面几层的混合方式 */
+  background-blend-mode: screen, soft-light, overlay, normal;
+
+  /* ==== 阴影增强立体感 ==== */
+  box-shadow:
+    0 18px 48px rgba(0,0,0,0.6),            /* 外投影：下方黑影 */
+    inset 0 0 40px rgba(255,255,255,0.08),  /* 内亮光：整体微光 */
+    inset 0 12px 24px rgba(255,255,255,0.06); /* 上方淡光 */
+
+  position: relative;
+
+  /* ==== 动画设置 ==== */
+  /* 初始不旋转，播放时你可以用 JS 动态加速 */
+  animation: vinyl-spin 0s linear infinite;
+}
+
+/* 唱片旋转动画（旋转 360°） */
+@keyframes vinyl-spin {
+  to { transform: rotate(360deg); }
+}
+
+
+.vinyl .label {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  /* 缩窄黑色轮盘可视环宽：适当增大贴纸尺寸 */
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.2) 100%),
+              url('../img/cover/华北浪革/华北浪革.png') center/cover no-repeat;
+}
+
+
+
+.intro-controls {
+  display: inline-flex;
+  gap: 16px;
+  margin-bottom: 1rem;
+}
+
+.ctrl-btn {
+  background: rgba(255,255,255,0.12);
+  color: var(--text-light);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.ctrl-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.ctrl-btn:hover:not([disabled]) { background: rgba(255,255,255,0.2); transform: translateY(-1px); }
+
+.intro-btn {
+  background: rgba(255,255,255,0.09);
+  color: var(--text-light);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 0.9rem 1.6rem;
+  font-size: 16px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: all 220ms ease;
+}
+
+.intro-btn:hover {
+  background: rgba(255,255,255,0.16);
+  transform: translateY(-2px);
+}
+
+.intro-tip {
+  margin-top: 0.75rem;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .intro-title { letter-spacing: 0.1em; }
+}

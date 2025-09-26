@@ -21,10 +21,7 @@
   transition: opacity 700ms ease;
 }
 
-#intro-overlay.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
+#intro-overlay.fade-out { opacity: 0; pointer-events: none; }
 
 #intro-canvas {
   position: absolute;
@@ -33,6 +30,17 @@
   height: 100%;
   display: block;
   filter: blur(0.3px) saturate(1.05);
+}
+
+/* ECG 覆盖画布：位于黑胶之上，整层铺满 */
+#intro-ecg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1; /* 在黑胶之下，形成“穿过”时被黑胶遮挡的效果 */
+  pointer-events: none; /* 不拦截点击 */
 }
 
 .intro-content {
@@ -52,16 +60,14 @@
   color: transparent; /* 文字本身无颜色，仅靠描边与阴影显形 */
   -webkit-text-fill-color: transparent; /* 强制 WebKit 内核透明填充，避免默认黑色 */
   -webkit-text-stroke: 1px rgba(0,0,0,0.28); /* 深一点的暗描边，增强内凹边界 */
-  /* 通过更强的上左暗影 + 极弱的下右高光，营造“刻进背景”的质感 */
   text-shadow:
     -2px -2px 3px rgba(0, 0, 0, 0.42),  /* 上左内壁阴影（主）*/
     -1px -1px 0 rgba(0, 0, 0, 0.28),    /* 上左锐边阴影（次）*/
     1px 1px 1px rgba(93, 178, 255, 0.08); /* 下右极弱高光（避免白感，用海色系）*/
 
-  /* 字号在这里调节：clamp(最小, 首选vw, 最大) → 非常大 */
+  /* 字号：非常大 */
   font-size: clamp(56px, 14vw, 280px);
   font-weight: 900; /* 加粗 */
-  /* 字体在这里调节：可替换为你的艺术字体 */
   font-family: 'JingHuaOldSongTi', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   letter-spacing: 0.06em;
   opacity: 0;
@@ -89,102 +95,36 @@
   margin: 0 auto 1.25rem;
 }
 
+/* 黑胶唱片（深黑亮面 + 斜向反光 + 外缘高光 + 内缘压边 + 细腻纹理） */
 .vinyl {
-  /* ==== 大小设置 ==== */
-  /* min(36vw, 220px) → 在大屏时取屏幕宽度 36%，小屏时最大 220px */
+  /* 尺寸更小更精致（可按需调整） */
   width: min(36vw, 220px);
   height: min(36vw, 220px);
-  border-radius: 50%; /* 圆形唱片 */
+  border-radius: 50%;
+  
+  /* 使用图片作为黑胶盘（替代所有渐变/纹理） */
+  background: url('../img/other/黑胶唱片.png') center/contain no-repeat;
 
-  /* ==== 背景层叠，模拟黑胶质感 ==== */
-  background:
-    /* 1. 斜向镜面高光（左上 → 右下） */
-    /*   - 参数调整：
-         - 第一个透明度 0.22 → 越大越亮
-         - 渐变位置 12%、25%、40% → 控制亮带宽度和过渡 */
-    linear-gradient(135deg,
-      rgba(255,255,255,0.22) 12%,
-      rgba(255,255,255,0.10) 25%,
-      rgba(255,255,255,0.00) 40%,
-      rgba(255,255,255,0.08) 65%,
-      rgba(255,255,255,0.18) 85%
-    ),
-
-    /* 2. 环向微光（唱片边缘轻微闪光） */
-    /*   - from 200deg → 起始角度（可以调整旋转反光方向）
-         - rgba(255,255,255,0.07) → 透明度（数值越大越亮）
-         - 0/30/60/100% → 控制环向分布 */
-    /* conic-gradient(from 200deg at 50% 50%,
-      rgba(255,255,255,0.0) 0%, rgba(255,255,255,0) 30%,
-      rgba(255,255,255,0.0) 60%, rgba(255,255,255,0) 100%
-    ), */
-
-    /* 3. 中央柔和高光（提升中心亮度） */
-    radial-gradient(circle at 48% 42%,
-      rgba(255,255,255,0.12) 0%,
-      rgba(255,255,255,0) 42%
-    ),
-
-    /* 4. 唱片纹理（repeating-radial-gradient 模拟同心圆） */
-    /*   - 0 1px → 亮线的宽度
-         - 1px 2.5px → 每个纹理的间距
-         - rgba 透明度控制纹理亮度 */
-    repeating-radial-gradient(circle at 50% 50%,
-      rgba(255,255,255,0.04) 0 1px,
-      rgba(255,255,255,0) 1px 2.5px
-    ),
-
-    /* 5. 深黑基底 */
-    radial-gradient(circle at 50% 50%,
-      #000 0%,
-      #000 70%,
-      #050505 100%
-    );
-
-
-
-  /* ==== 背景融合模式 ==== */
-  /* 顺序对应上面几层的混合方式 */
-  background-blend-mode: screen, soft-light, overlay, normal;
-
-  /* ==== 阴影增强立体感 ==== */
-  box-shadow:
-    0 18px 48px rgba(0,0,0,0.6),            /* 外投影：下方黑影 */
-    inset 0 0 40px rgba(255,255,255,0.08),  /* 内亮光：整体微光 */
-    inset 0 12px 24px rgba(255,255,255,0.06); /* 上方淡光 */
+  /* 阴影增强立体感 */
+  box-shadow: 0 18px 48px rgba(0,0,0,0.6);
 
   position: relative;
-
-  /* ==== 动画设置 ==== */
-  /* 初始不旋转，播放时你可以用 JS 动态加速 */
-  animation: vinyl-spin 0s linear infinite;
+  animation: vinyl-spin 0s linear infinite; /* 初始不转，播放时加速 */
 }
 
-/* 唱片旋转动画（旋转 360°） */
-@keyframes vinyl-spin {
-  to { transform: rotate(360deg); }
-}
-
+@keyframes vinyl-spin { to { transform: rotate(360deg); } }
 
 .vinyl .label {
   position: absolute;
   inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
-  /* 缩窄黑色轮盘可视环宽：适当增大贴纸尺寸 */
-  width: 70%;
-  height: 70%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.2) 100%),
-              url('../img/cover/华北浪革/华北浪革.png') center/cover no-repeat;
+  /* 直接用整张黑胶图，不再叠贴纸（如需叠专辑封面，可移除此行） */
+  display: none;
 }
 
+/* 不再绘制中心轴孔（由图片决定） */
 
-
-.intro-controls {
-  display: inline-flex;
-  gap: 16px;
-  margin-bottom: 1rem;
-}
+.intro-controls { display: inline-flex; gap: 16px; margin-bottom: 1rem; }
 
 .ctrl-btn {
   background: rgba(255,255,255,0.12);
@@ -212,17 +152,8 @@
   transition: all 220ms ease;
 }
 
-.intro-btn:hover {
-  background: rgba(255,255,255,0.16);
-  transform: translateY(-2px);
-}
+.intro-btn:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
 
-.intro-tip {
-  margin-top: 0.75rem;
-  font-size: 13px;
-  color: var(--text-dim);
-}
+.intro-tip { margin-top: 0.75rem; font-size: 13px; color: var(--text-dim); }
 
-@media (max-width: 768px) {
-  .intro-title { letter-spacing: 0.1em; }
-}
+@media (max-width: 768px) { .intro-title { letter-spacing: 0.1em; } }

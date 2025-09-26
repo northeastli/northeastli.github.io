@@ -4,10 +4,30 @@
   if (!overlay) return;
   const canvas = document.getElementById('intro-canvas');
   const ctx = canvas.getContext('2d');
+  const ecgCanvas = document.getElementById('intro-ecg');
+  const ecg = ecgCanvas.getContext('2d');
   const enterBtn = document.getElementById('intro-enter-btn');
   const playBtn = document.getElementById('intro-play-btn');
   const pauseBtn = document.getElementById('intro-pause-btn');
   const vinyl = document.getElementById('intro-vinyl');
+
+  // ===== 可调配置：尖峰数量/高度/宽度/方向/噪声/边缘衰减 =====
+  const SPIKE_COUNT = 20;                       // 尖峰数量
+  const SPIKE_HEIGHT = { min: 10, max: 100 };    // 像素高度范围
+  const SPIKE_WIDTH  = { min: 0.012, max: 0.04 }; // 相对宽度（0..1）
+  const SPIKE_UPWARD_PROB = 0.6;                // 向上尖峰概率（其余向下）
+  const NOISE_INTENSITY = 1.2;                  // 噪声振幅（像素）
+  const EDGE_TAPER_EXP = 1.25;                  // 边缘衰减锐度（越大越中间集中）
+  const WAVE_Y_SCALE = 1.0;                     // 垂直整体缩放（>1 更高，<1 更低）
+
+  // 固定音乐波形：预生成“尖峰”布局（位置/宽度/高度/方向），不随时间移动
+  const ecgSpikes = Array.from({length: SPIKE_COUNT}, () => ({
+    u: 0.06 + 0.88*Math.random(),                          // 峰位置（相对 0..1）
+    w: SPIKE_WIDTH.min + (SPIKE_WIDTH.max-SPIKE_WIDTH.min)*Math.random(),
+    h: SPIKE_HEIGHT.min + (SPIKE_HEIGHT.max-SPIKE_HEIGHT.min)*Math.random(),
+    dir: Math.random() < SPIKE_UPWARD_PROB ? -1 : 1,       // -1 向上（屏幕坐标减小），1 向下
+    phase: Math.random()*Math.PI*2
+  }));
 
   // 主题音频
   const audio = new Audio('audio/shenhai.mp3');
@@ -20,6 +40,10 @@
     canvas.width = Math.floor(canvas.clientWidth * dpr);
     canvas.height = Math.floor(canvas.clientHeight * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    ecgCanvas.width = Math.floor(ecgCanvas.clientWidth * dpr);
+    ecgCanvas.height = Math.floor(ecgCanvas.clientHeight * dpr);
+    ecg.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   window.addEventListener('resize', resize);
   resize();
@@ -78,6 +102,94 @@
       ctx.fillStyle = g;
       ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2); ctx.fill();
     });
+
+    // ECG: 居中短段 + 两端连接 + 扩散环，位于黑胶之下
+    const ew = ecgCanvas.clientWidth, eh = ecgCanvas.clientHeight;
+    ecg.clearRect(0,0,ew,eh);
+
+    // 估算黑胶在屏中心，定位其水平中线；如有位移，可通过 getBoundingClientRect 动态拿位置
+    const vinylEl = vinyl;
+    let midY = eh * 0.5;
+    let centerX = ew * 0.5;
+    let vinylR = Math.min(vinylEl?.clientWidth || 220, vinylEl?.clientHeight || 220)/2;
+    if (vinylEl){
+      const rect = vinylEl.getBoundingClientRect();
+      const orect = overlay.getBoundingClientRect();
+      centerX = rect.left - orect.left + rect.width/2;
+      midY = rect.top - orect.top + rect.height/2;
+      vinylR = rect.width/2;
+    }
+
+    const tsec = now/1000;
+    const segmentW = Math.max(vinylR*3, 800); // 中心段宽度（固定）
+    const leftX = centerX - segmentW/2;
+    const rightX = centerX + segmentW/2;
+
+    // 呼吸/亮度随时间变化，但波形不水平移动
+    const drift = Math.sin(tsec*0.53)*1.6 + Math.cos(tsec*0.23)*1.2; // 轻微上下漂移
+    const breath = (Math.sin(tsec*0.5)*0.5 + 0.5); // 0~1
+
+    // 固定音乐波形：基线轻正弦 + 多个尖峰（幂函数尖化）叠加；不水平移动
+    function waveY(x){
+      const u = (x - leftX) / segmentW; // 0..1
+      const k = Math.PI * 2;
+      // 轻柔底纹（保持音乐感，不显得生硬）
+      const baseA = WAVE_Y_SCALE * 4 * (0.7 + 0.3*breath);
+      const baseB = WAVE_Y_SCALE * 2 * (0.6 + 0.4*Math.sin(tsec*0.8));
+      // 边缘衰减：两端趋于平（0 at edges, 1 at center）
+      const edgeTaper = Math.pow(Math.sin(Math.PI * Math.min(Math.max(u,0),1)), EDGE_TAPER_EXP);
+      let y = midY + drift
+            + edgeTaper * (baseA * Math.sin(u * k * 2.5)
+            +              baseB * Math.sin(u * k * 4.5 + 0.7));
+
+      // 尖峰叠加（越接近峰中心越尖，峰高随时间呼吸变化；峰可向上或向下）
+      for (const s of ecgSpikes){
+        const d = Math.abs(u - s.u);
+        if (d < s.w){
+          const sharp = 1 - (d / s.w);        // 0..1 线性
+          const peakProfile = Math.pow(sharp, 2.2); // 幂次提高尖锐度
+          const hEff = WAVE_Y_SCALE * s.h * (0.6 + 0.4*breath) * (0.85 + 0.3*Math.sin(tsec*0.6 + s.phase));
+          y += s.dir * hEff * peakProfile * edgeTaper; // dir: -1 上、1 下
+        }
+      }
+
+      // 细粒噪声（非闪烁）：以空间频率为主的“静态+微呼吸”噪声
+      const n = (Math.sin(u*117.0 + 1.7) + Math.sin(u*263.0 + 0.8))*0.5;
+      y += edgeTaper * WAVE_Y_SCALE * NOISE_INTENSITY * (0.6 + 0.4*breath) * n;
+      return y;
+    }
+
+  // 去掉左右连接段：只显示电波中心段
+
+    // 计算两端绘制范围（避开黑胶水平投影范围）；不再绘制发光层，避免“呼吸”遮挡电波
+    const leftDrawEnd = Math.min(rightX, centerX - vinylR);
+    const rightDrawStart = Math.max(leftX, centerX + vinylR);
+
+    // 两端核心细线层
+    ecg.strokeStyle = 'rgba(255,255,255,0.92)';
+    ecg.lineWidth = 1.6;
+    // 左段
+    if (leftDrawEnd > leftX){
+      ecg.beginPath();
+      let first3 = true;
+      for(let x= leftX; x<=leftDrawEnd; x+=2){
+        const y = waveY(x);
+        if (first3) { ecg.moveTo(x,y); first3=false; } else { ecg.lineTo(x,y); }
+      }
+      ecg.stroke();
+    }
+    // 右段
+    if (rightDrawStart < rightX){
+      ecg.beginPath();
+      let first4 = true;
+      for(let x= rightDrawStart; x<=rightX; x+=2){
+        const y = waveY(x);
+        if (first4) { ecg.moveTo(x,y); first4=false; } else { ecg.lineTo(x,y); }
+      }
+      ecg.stroke();
+    }
+
+  // 去掉两端扩散光圈（按需求）
 
     requestAnimationFrame(draw);
   }
